@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 interface SealProps {
   size?: number
   className?: string
@@ -178,30 +180,47 @@ export function Seal({ size = 180, className = '', onDark = false }: SealProps) 
   )
 }
 
-/** Compact mark used in the sidebar header. */
+/**
+ * Compact mark used in the sidebar header.
+ * The Mabini Colleges seal (public/images/mabini-logo.png) sits where the old
+ * home glyph was; if the file is missing the drawn tile stands in for it.
+ */
 export function BrandMark({ className = '' }: { className?: string }) {
+  const [logoFailed, setLogoFailed] = useState(false)
+
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-blue-600/90 ring-1 ring-blue-400/40">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M3 10.5 12 4l9 6.5"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-white"
-          />
-          <path
-            d="M5.5 10.5V20h13v-9.5M9 20v-4.5h6V20"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-white"
-          />
-        </svg>
-      </div>
+      {logoFailed ? (
+        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-blue-600/90 ring-1 ring-blue-400/40">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M3 10.5 12 4l9 6.5"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-white"
+            />
+            <path
+              d="M5.5 10.5V20h13v-9.5M9 20v-4.5h6V20"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="text-white"
+            />
+          </svg>
+        </div>
+      ) : (
+        <img
+          src={`${import.meta.env.BASE_URL}images/mabini-logo.png`}
+          alt="Mabini Colleges, Inc. logo"
+          width={40}
+          height={40}
+          className="h-10 w-10 shrink-0 rounded-full object-contain drop-shadow-[0_2px_6px_rgba(0,0,0,0.35)]"
+          onError={() => setLogoFailed(true)}
+        />
+      )}
       <div className="min-w-0">
         <div className="truncate text-[15px] font-extrabold tracking-wide text-white">
           S.A.C.O.D.E.
