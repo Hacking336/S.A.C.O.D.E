@@ -66,7 +66,7 @@ export default function ReportDetails() {
 
   return (
     <>
-      <PageHeader title="Report Details" backTo="/my-reports" variant="student" />
+      <PageHeader title="Report Details" backTo="/my-reports" variant="instructor" />
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.35fr_1fr]">
         {/* -------------------------- Left column -------------------------- */}

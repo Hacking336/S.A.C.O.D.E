@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 import { AppLayout } from './layouts/AppLayout'
 import Login from './pages/Login'
 import AdminLogin from './pages/AdminLogin'
-import StudentDashboard from './pages/StudentDashboard'
+import InstructorDashboard from './pages/InstructorDashboard'
 import ReportDamage from './pages/ReportDamage'
 import MyReports from './pages/MyReports'
 import ReportDetails from './pages/ReportDetails'
@@ -27,9 +27,9 @@ export default function App() {
       <Route path="/" element={<Login />} />
       <Route path="/admin/login" element={<AdminLogin />} />
 
-      {/* --------------------------- Student --------------------------- */}
-      <Route element={<AppLayout variant="student" />}>
-        <Route path="/dashboard" element={<StudentDashboard />} />
+      {/* ------------------------- Instructor ------------------------- */}
+      <Route element={<AppLayout variant="instructor" />}>
+        <Route path="/dashboard" element={<InstructorDashboard />} />
         <Route path="/report-damage" element={<ReportDamage />} />
         <Route path="/my-reports" element={<MyReports />} />
         <Route path="/reports/:id" element={<ReportDetails />} />

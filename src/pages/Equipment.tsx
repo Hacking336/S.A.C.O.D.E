@@ -24,7 +24,7 @@ function StatusPill({ status }: { status: EquipmentStatus }) {
   )
 }
 
-export default function Equipment({ variant = 'student' }: { variant?: 'student' | 'admin' }) {
+export default function Equipment({ variant = 'instructor' }: { variant?: 'instructor' | 'admin' }) {
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [status, setStatus] = useState<StatusTab>('All')

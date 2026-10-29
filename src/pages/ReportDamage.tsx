@@ -71,7 +71,7 @@ export default function ReportDamage() {
         title="Report Damaged Equipment"
         subtitle="Fill in the details of the damaged equipment."
         backTo="/dashboard"
-        variant="student"
+        variant="instructor"
       />
 
       <form onSubmit={handleSubmit} className="card p-7">

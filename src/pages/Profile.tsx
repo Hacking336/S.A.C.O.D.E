@@ -18,7 +18,7 @@ export default function Profile() {
 
   return (
     <>
-      <PageHeader title="Profile" subtitle="Manage your account details." variant="student" />
+      <PageHeader title="Profile" subtitle="Manage your account details." variant="instructor" />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-[340px_1fr]">
         {/* --------------------------- Identity card -------------------------- */}

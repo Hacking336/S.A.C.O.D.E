@@ -175,19 +175,19 @@ alter table public.report_history enable row level security;
 alter table public.announcements  enable row level security;
 
 -- Signed-in instructors: read the catalogue, manage only their own reports.
-create policy "students read equipment"
+create policy "instructors read equipment"
   on public.equipment for select
   to authenticated
   using (true);
 
-create policy "students read own reports"
+create policy "instructors read own reports"
   on public.reports for select
   to authenticated
   using (reporter_id = (
     select id from public.users where auth_user_id = auth.uid()
   ));
 
-create policy "students insert own reports"
+create policy "instructors insert own reports"
   on public.reports for insert
   to authenticated
   with check (reporter_id = (

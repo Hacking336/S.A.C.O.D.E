@@ -22,7 +22,7 @@ Supabase (PostgreSQL) database.
 │   ├── layouts/AppLayout.tsx  sidebar + content shell
 │   └── pages/
 │       ├── Login.tsx            Sign-In screen
-│       ├── StudentDashboard.tsx Student Dashboard
+│       ├── InstructorDashboard.tsx Instructor Dashboard
 │       ├── ReportDamage.tsx     Report Damaged Equipment form
 │       ├── MyReports.tsx        My Reports list + tabs + search
 │       ├── ReportDetails.tsx    Report Details + photo carousel + history
@@ -41,8 +41,8 @@ npm run dev          # http://localhost:3000
 ```
 
 The Sign-In button bypasses authentication and routes straight to the
-Student Dashboard. Use the profile chip in the top bar to switch between the
-Student and Admin views.
+Instructor Dashboard. Use the profile chip in the top bar to switch between the
+Instructor and Admin views.
 
 ### Login images (exact paths)
 

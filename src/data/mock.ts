@@ -51,7 +51,7 @@ export const adminUser = {
 
 /* -------------------------- Instructor --------------------------- */
 
-export const studentStats = [
+export const instructorStats = [
   { key: 'submitted', label: 'Reports Submitted', value: 12, sub: 'All time', tone: 'blue', icon: 'file' },
   { key: 'pending', label: 'Pending', value: 4, sub: 'Awaiting review', tone: 'orange', icon: 'clock' },
   { key: 'progress', label: 'In Progress', value: 3, sub: 'Being repaired', tone: 'purple', icon: 'wrench' },

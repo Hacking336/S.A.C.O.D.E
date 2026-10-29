@@ -31,7 +31,7 @@ interface NavItem {
   badge?: number
 }
 
-const STUDENT_NAV: NavItem[] = [
+const INSTRUCTOR_NAV: NavItem[] = [
   { label: 'Dashboard', to: '/dashboard', icon: LayoutDashboard },
   { label: 'Report Damage', to: '/report-damage', icon: FileWarning },
   { label: 'My Reports', to: '/my-reports', icon: ClipboardList },
@@ -60,12 +60,12 @@ export function Sidebar({
   open,
   onClose,
 }: {
-  variant: 'student' | 'admin'
+  variant: 'instructor' | 'admin'
   open: boolean
   onClose: () => void
 }) {
   const navigate = useNavigate()
-  const items = variant === 'student' ? STUDENT_NAV : ADMIN_NAV
+  const items = variant === 'instructor' ? INSTRUCTOR_NAV : ADMIN_NAV
   // /admin itself must stay active only on the admin dashboard route
   const end = (to: string) => to === '/admin'
 

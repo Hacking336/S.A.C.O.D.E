@@ -33,7 +33,7 @@ export default function KnowledgeBase() {
       <PageHeader
         title="Knowledge Base"
         subtitle="View common issues and solutions."
-        variant="student"
+        variant="instructor"
       />
 
       {/* --------------------------- Search bar --------------------------- */}

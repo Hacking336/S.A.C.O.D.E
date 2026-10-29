@@ -15,7 +15,7 @@ export default function Announcements() {
       <PageHeader
         title="Announcements"
         subtitle="Official notices from the administration."
-        variant="student"
+        variant="instructor"
       />
 
       <div className="space-y-4">

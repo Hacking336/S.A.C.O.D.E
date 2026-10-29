@@ -7,7 +7,7 @@ interface PageHeaderProps {
   title: ReactNode
   subtitle?: string
   backTo?: string
-  variant: 'student' | 'admin'
+  variant: 'instructor' | 'admin'
   /** page-specific controls rendered to the left of the icon cluster */
   extra?: ReactNode
 }
@@ -16,7 +16,7 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const user = variant === 'student' ? currentUser : adminUser
+  const user = variant === 'instructor' ? currentUser : adminUser
 
   useEffect(() => {
     if (!open) return
@@ -76,7 +76,7 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
           >
             <span
               className={`grid h-8 w-8 place-items-center rounded-full text-[12px] font-bold text-white ${
-                variant === 'student' ? 'bg-blue-600' : 'bg-indigo-600'
+                variant === 'instructor' ? 'bg-blue-600' : 'bg-indigo-600'
               }`}
             >
               {user.initials}

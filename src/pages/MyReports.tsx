@@ -45,7 +45,7 @@ export default function MyReports() {
       <PageHeader
         title="My Reports"
         subtitle="View and track all your submitted reports."
-        variant="student"
+        variant="instructor"
       />
 
       {/* --------------------------- Filter bar --------------------------- */}

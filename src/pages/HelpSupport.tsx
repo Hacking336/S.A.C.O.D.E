@@ -30,7 +30,7 @@ export default function HelpSupport() {
       <PageHeader
         title="Help & Support"
         subtitle="Get assistance with Campus Care"
-        variant="student"
+        variant="instructor"
       />
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">

@@ -32,7 +32,7 @@ export default function Notifications() {
       <PageHeader
         title="Notifications"
         subtitle="Stay updated on your report activity."
-        variant="student"
+        variant="instructor"
         extra={
           <button
             type="button"

@@ -4,7 +4,7 @@ import { Menu } from 'lucide-react'
 import { Sidebar } from '../components/Sidebar'
 import { BrandMark } from '../components/Seal'
 
-export function AppLayout({ variant }: { variant: 'student' | 'admin' }) {
+export function AppLayout({ variant }: { variant: 'instructor' | 'admin' }) {
   const [navOpen, setNavOpen] = useState(false)
   const { pathname } = useLocation()
 

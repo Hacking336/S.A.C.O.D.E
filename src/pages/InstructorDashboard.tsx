@@ -13,7 +13,7 @@ import {
 import { PageHeader } from '../components/PageHeader'
 import { StatCard, type Tone } from '../components/StatCard'
 import { StatusBadge, PriorityBadge } from '../components/Badges'
-import { announcements, quickActions, reports, studentStats } from '../data/mock'
+import { announcements, quickActions, reports, instructorStats } from '../data/mock'
 
 const ACTION_ICONS: Record<string, LucideIcon> = {
   plus: PlusCircle,
@@ -27,7 +27,7 @@ const ANNOUNCEMENT_TONE = {
   red: 'bg-red-100 text-red-500',
 }
 
-export default function StudentDashboard() {
+export default function InstructorDashboard() {
   const recent = reports.slice(0, 3)
 
   return (
@@ -39,12 +39,12 @@ export default function StudentDashboard() {
           </>
         }
         subtitle="Here's what's happening with your reports today."
-        variant="student"
+        variant="instructor"
       />
 
       {/* --------------------------- Stat cards --------------------------- */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-        {studentStats.map((stat) => (
+        {instructorStats.map((stat) => (
           <StatCard
             key={stat.key}
             label={stat.label}
