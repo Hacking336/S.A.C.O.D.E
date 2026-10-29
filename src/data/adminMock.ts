@@ -65,7 +65,7 @@ export const maintenanceStaff: MaintenanceStaff[] = [
 
 /* ------------------------------ Users ----------------------------- */
 
-export type UserRole = 'Admin' | 'Maintenance Staff' | 'Student'
+export type UserRole = 'Admin' | 'Maintenance Staff' | 'Instructor'
 export type UserStatus = 'Active' | 'Inactive'
 
 export interface DirectoryUser {
@@ -81,15 +81,15 @@ export interface DirectoryUser {
 
 export const directoryUsers: DirectoryUser[] = [
   { id: 'USR-001', name: 'Admin User', initials: 'AU', email: 'admin@mabini.edu.ph', role: 'Admin', department: 'Administration', status: 'Active', lastActive: 'Just now' },
-  { id: 'USR-002', name: 'Juan Dela Cruz', initials: 'JD', email: 'juan.delacruz@mabini.edu.ph', role: 'Student', department: 'College of Computer Studies', status: 'Active', lastActive: '10 minutes ago' },
-  { id: 'USR-003', name: 'Maria Santos', initials: 'MS', email: 'maria.santos@mabini.edu.ph', role: 'Student', department: 'College of Education', status: 'Active', lastActive: '2 hours ago' },
-  { id: 'USR-004', name: 'Pedro Reyes', initials: 'PR', email: 'pedro.reyes@mabini.edu.ph', role: 'Student', department: 'College of Nursing', status: 'Active', lastActive: 'Yesterday' },
+  { id: 'USR-002', name: 'Juan Dela Cruz', initials: 'JD', email: 'juan.delacruz@mabini.edu.ph', role: 'Instructor', department: 'College of Computer Studies', status: 'Active', lastActive: '10 minutes ago' },
+  { id: 'USR-003', name: 'Maria Santos', initials: 'MS', email: 'maria.santos@mabini.edu.ph', role: 'Instructor', department: 'College of Education', status: 'Active', lastActive: '2 hours ago' },
+  { id: 'USR-004', name: 'Pedro Reyes', initials: 'PR', email: 'pedro.reyes@mabini.edu.ph', role: 'Instructor', department: 'College of Nursing', status: 'Active', lastActive: 'Yesterday' },
   { id: 'USR-005', name: 'Rey Manalo', initials: 'RM', email: 'rey.manalo@mabini.edu.ph', role: 'Maintenance Staff', department: 'IT Department', status: 'Active', lastActive: '25 minutes ago' },
   { id: 'USR-006', name: 'Tessie Bautista', initials: 'TB', email: 'tessie.bautista@mabini.edu.ph', role: 'Maintenance Staff', department: 'Facilities', status: 'Active', lastActive: '1 hour ago' },
-  { id: 'USR-007', name: 'Ana Villanueva', initials: 'AV', email: 'ana.villanueva@mabini.edu.ph', role: 'Student', department: 'College of Computer Studies', status: 'Active', lastActive: '3 hours ago' },
+  { id: 'USR-007', name: 'Ana Villanueva', initials: 'AV', email: 'ana.villanueva@mabini.edu.ph', role: 'Instructor', department: 'College of Computer Studies', status: 'Active', lastActive: '3 hours ago' },
   { id: 'USR-008', name: 'Joel Ramos', initials: 'JR', email: 'joel.ramos@mabini.edu.ph', role: 'Maintenance Staff', department: 'Facilities', status: 'Active', lastActive: 'Yesterday' },
-  { id: 'USR-009', name: 'Carlo Mendoza', initials: 'CM', email: 'carlo.mendoza@mabini.edu.ph', role: 'Student', department: 'College of Business', status: 'Inactive', lastActive: 'Mar 02, 2025' },
-  { id: 'USR-010', name: 'Liza Fernandez', initials: 'LF', email: 'liza.fernandez@mabini.edu.ph', role: 'Student', department: 'College of Education', status: 'Inactive', lastActive: 'Feb 18, 2025' },
+  { id: 'USR-009', name: 'Carlo Mendoza', initials: 'CM', email: 'carlo.mendoza@mabini.edu.ph', role: 'Instructor', department: 'College of Business', status: 'Inactive', lastActive: 'Mar 02, 2025' },
+  { id: 'USR-010', name: 'Liza Fernandez', initials: 'LF', email: 'liza.fernandez@mabini.edu.ph', role: 'Instructor', department: 'College of Education', status: 'Inactive', lastActive: 'Feb 18, 2025' },
 ]
 
 /* ---------------------------- Audit logs -------------------------- */

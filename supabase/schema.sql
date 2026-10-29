@@ -30,8 +30,8 @@ create table public.users (
   auth_user_id  uuid,                       -- linked to auth.users when available
   full_name     text        not null,
   email         text        not null unique,
-  role          text        not null default 'STUDENT'
-                check (role in ('STUDENT', 'ADMIN', 'MAINTENANCE')),
+  role          text        not null default 'INSTRUCTOR'
+                check (role in ('INSTRUCTOR', 'ADMIN', 'MAINTENANCE')),
   avatar_url    text,
   is_active     boolean     not null default true,
   created_at    timestamptz not null default now(),
@@ -174,7 +174,7 @@ alter table public.reports        enable row level security;
 alter table public.report_history enable row level security;
 alter table public.announcements  enable row level security;
 
--- Signed-in students: read the catalogue, manage only their own reports.
+-- Signed-in instructors: read the catalogue, manage only their own reports.
 create policy "students read equipment"
   on public.equipment for select
   to authenticated
@@ -203,10 +203,10 @@ create policy "read announcements"
 --  SEED DATA  (mirrors the mock data used by the React front end)
 -- =====================================================================
 insert into public.users (full_name, email, role) values
-  ('Juan Dela Cruz', 'juan.delacruz@mabini.edu.ph', 'STUDENT'),
-  ('Maria Santos',   'maria.santos@mabini.edu.ph',  'STUDENT'),
-  ('Pedro Reyes',    'pedro.reyes@mabini.edu.ph',   'STUDENT'),
-  ('Ana Villanueva', 'ana.villanueva@mabini.edu.ph','STUDENT'),
+  ('Juan Dela Cruz', 'juan.delacruz@mabini.edu.ph', 'INSTRUCTOR'),
+  ('Maria Santos',   'maria.santos@mabini.edu.ph',  'INSTRUCTOR'),
+  ('Pedro Reyes',    'pedro.reyes@mabini.edu.ph',   'INSTRUCTOR'),
+  ('Ana Villanueva', 'ana.villanueva@mabini.edu.ph','INSTRUCTOR'),
   ('Admin User',     'admin@mabini.edu.ph',         'ADMIN');
 
 insert into public.equipment (equipment_code, name, category, brand_model, serial_number, building, room, status) values

@@ -161,7 +161,7 @@ export default function AdminAnnouncements() {
       {draft && (
         <Modal
           title={draft.id ? 'Edit Announcement' : 'New Announcement'}
-          subtitle="Published immediately to every student and staff dashboard."
+          subtitle="Published immediately to every instructor and staff dashboard."
           onClose={() => setDraft(null)}
           width="max-w-2xl"
         >

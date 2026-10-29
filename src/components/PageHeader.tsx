@@ -95,8 +95,8 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
                 <p className="truncate text-[11.5px] text-slate-500">{user.email}</p>
               </div>
               <div className="my-1 h-px bg-slate-100" />
-              {/* Students get no shortcut into the admin side — that door is
-                  /admin/login. Admins may still preview the student view. */}
+              {/* Instructors get no shortcut into the admin side — that door is
+                  /admin/login. Admins may still preview the instructor view. */}
               {variant === 'admin' && (
                 <Link
                   to="/dashboard"
@@ -104,7 +104,7 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
                   className="flex items-center gap-2.5 px-4 py-2.5 text-[13px] text-slate-700 hover:bg-slate-50"
                 >
                   <RefreshCw className="h-4 w-4 text-slate-400" />
-                  Switch to Student view
+                  Switch to Instructor view
                 </Link>
               )}
               <button

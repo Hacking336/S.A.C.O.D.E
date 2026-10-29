@@ -12,7 +12,7 @@ import {
 const ROLE_STYLES: Record<UserRole, string> = {
   Admin: 'bg-blue-100 text-blue-700 ring-blue-200',
   'Maintenance Staff': 'bg-green-100 text-green-700 ring-green-200',
-  Student: 'bg-slate-100 text-slate-600 ring-slate-200',
+  Instructor: 'bg-slate-100 text-slate-600 ring-slate-200',
 }
 
 interface Draft {
@@ -27,7 +27,7 @@ interface Draft {
 const EMPTY_DRAFT: Draft = {
   name: '',
   email: '',
-  role: 'Student',
+  role: 'Instructor',
   department: '',
   status: 'Active',
 }
@@ -118,7 +118,7 @@ export default function AdminUsers() {
 
       <div className="card mb-5 flex flex-wrap items-center justify-between gap-3 p-3.5">
         <div className="flex flex-wrap items-center gap-1">
-          {(['All', 'Admin', 'Maintenance Staff', 'Student'] as const).map((role) => (
+          {(['All', 'Admin', 'Maintenance Staff', 'Instructor'] as const).map((role) => (
             <button
               key={role}
               type="button"
@@ -392,7 +392,7 @@ export default function AdminUsers() {
                   value={draft.role}
                   onChange={(e) => setDraft({ ...draft, role: e.target.value as UserRole })}
                 >
-                  {(['Admin', 'Maintenance Staff', 'Student'] as const).map((role) => (
+                  {(['Admin', 'Maintenance Staff', 'Instructor'] as const).map((role) => (
                     <option key={role} value={role}>
                       {role}
                     </option>

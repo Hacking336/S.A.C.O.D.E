@@ -39,9 +39,9 @@ public class UserRepository {
     }
 
     /** Fallback reporter while the front end has no real sign-in flow. */
-    public Optional<Long> findDefaultStudentId() {
+    public Optional<Long> findDefaultInstructorId() {
         return jdbc.query(
-                "select id from public.users where role = 'STUDENT' order by id limit 1",
+                "select id from public.users where role = 'INSTRUCTOR' order by id limit 1",
                 rs -> {
                     if (rs.next()) {
                         return Optional.of(rs.getLong("id"));

@@ -4,10 +4,10 @@ import { ArrowLeft, ShieldCheck } from 'lucide-react'
 import { Seal } from '../components/Seal'
 
 /**
- * Administrator sign-in — a separate door from the student sign-in.
+ * Administrator sign-in — a separate door from the instructor sign-in.
  *
  * Same night-building backdrop and seal as /, but the badge, the copy and the
- * destination make it clear this is the admin side. Like the student form it
+ * destination make it clear this is the admin side. Like the instructor form it
  * has no credentials and no validation: the button routes straight to /admin.
  */
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
@@ -84,7 +84,7 @@ export default function AdminLogin() {
             className="inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-white/85 transition hover:text-white"
           >
             <ArrowLeft className="h-3.5 w-3.5" />
-            Back to student sign in
+            Back to instructor sign in
           </Link>
         </main>
 

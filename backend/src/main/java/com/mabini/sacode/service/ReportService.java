@@ -297,14 +297,14 @@ public class ReportService {
         if (fallback.isPresent()) {
             return fallback.get();
         }
-        return users.findDefaultStudentId().orElse(null);
+        return users.findDefaultInstructorId().orElse(null);
     }
 
     private String reporterName(Long reporterId) {
         if (reporterId == null) {
-            return "Student";
+            return "Instructor";
         }
-        return users.findNameById(reporterId).orElse("Student");
+        return users.findNameById(reporterId).orElse("Instructor");
     }
 
     private static boolean isBlank(String value) {

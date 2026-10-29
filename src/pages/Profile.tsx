@@ -1,24 +1,16 @@
 import { useState } from 'react'
-import {
-  Building2,
-  GraduationCap,
-  Mail,
-  Save,
-  ShieldCheck,
-  UserRound,
-} from 'lucide-react'
+import { Briefcase, Building2, Mail, Save, ShieldCheck, UserRound } from 'lucide-react'
 import { PageHeader } from '../components/PageHeader'
-import { studentProfile } from '../data/mock'
+import { instructorProfile } from '../data/mock'
 
 export default function Profile() {
   const [form, setForm] = useState({
-    fullName: studentProfile.fullName,
-    email: studentProfile.email,
-    studentId: studentProfile.studentId,
-    department: studentProfile.department,
-    program: studentProfile.program,
-    yearLevel: studentProfile.yearLevel,
-    phone: studentProfile.phone,
+    fullName: instructorProfile.fullName,
+    email: instructorProfile.email,
+    employeeId: instructorProfile.employeeId,
+    department: instructorProfile.department,
+    position: instructorProfile.position,
+    phone: instructorProfile.phone,
   })
 
   const update = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) =>
@@ -32,12 +24,12 @@ export default function Profile() {
         {/* --------------------------- Identity card -------------------------- */}
         <section className="card h-fit p-6 text-center">
           <div className="mx-auto grid h-[88px] w-[88px] place-items-center rounded-full bg-blue-600 text-[30px] font-bold text-white ring-4 ring-blue-50">
-            {studentProfile.initials}
+            {instructorProfile.initials}
           </div>
-          <h2 className="mt-4 text-[18px] font-bold text-slate-900">{studentProfile.fullName}</h2>
+          <h2 className="mt-4 text-[18px] font-bold text-slate-900">{instructorProfile.fullName}</h2>
           <span className="mt-1.5 inline-flex items-center gap-1.5 rounded-full bg-blue-50 px-2.5 py-1 text-[11.5px] font-semibold text-blue-700 ring-1 ring-inset ring-blue-100">
             <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2} />
-            {studentProfile.role}
+            {instructorProfile.role}
           </span>
 
           <div className="mt-5 space-y-3 border-t border-slate-100 pt-5 text-left">
@@ -47,16 +39,16 @@ export default function Profile() {
                 <p className="text-[11.5px] font-medium uppercase tracking-wide text-slate-400">
                   Email
                 </p>
-                <p className="truncate text-[13px] text-slate-700">{studentProfile.email}</p>
+                <p className="truncate text-[13px] text-slate-700">{instructorProfile.email}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <UserRound className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" strokeWidth={1.9} />
               <div className="min-w-0">
                 <p className="text-[11.5px] font-medium uppercase tracking-wide text-slate-400">
-                  Student ID
+                  Employee ID
                 </p>
-                <p className="text-[13px] text-slate-700">{studentProfile.studentId}</p>
+                <p className="text-[13px] text-slate-700">{instructorProfile.employeeId}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -65,24 +57,22 @@ export default function Profile() {
                 <p className="text-[11.5px] font-medium uppercase tracking-wide text-slate-400">
                   Department
                 </p>
-                <p className="text-[13px] text-slate-700">{studentProfile.department}</p>
+                <p className="text-[13px] text-slate-700">{instructorProfile.department}</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <GraduationCap className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" strokeWidth={1.9} />
+              <Briefcase className="mt-0.5 h-4 w-4 shrink-0 text-slate-400" strokeWidth={1.9} />
               <div className="min-w-0">
                 <p className="text-[11.5px] font-medium uppercase tracking-wide text-slate-400">
-                  Program
+                  Position
                 </p>
-                <p className="text-[13px] text-slate-700">
-                  {studentProfile.program} · {studentProfile.yearLevel}
-                </p>
+                <p className="text-[13px] text-slate-700">{instructorProfile.position}</p>
               </div>
             </div>
           </div>
 
           <p className="mt-5 border-t border-slate-100 pt-4 text-[11.5px] text-slate-400">
-            Member since {studentProfile.memberSince}
+            Member since {instructorProfile.memberSince}
           </p>
         </section>
 
@@ -121,14 +111,14 @@ export default function Profile() {
               </div>
 
               <div>
-                <label className="field-label" htmlFor="studentId">
-                  Student ID
+                <label className="field-label" htmlFor="employeeId">
+                  Employee ID
                 </label>
                 <input
-                  id="studentId"
+                  id="employeeId"
                   className="field-input bg-slate-50 text-slate-500"
-                  value={form.studentId}
-                  onChange={update('studentId')}
+                  value={form.employeeId}
+                  onChange={update('employeeId')}
                   readOnly
                 />
               </div>
@@ -158,26 +148,14 @@ export default function Profile() {
               </div>
 
               <div>
-                <label className="field-label" htmlFor="yearLevel">
-                  Year Level
+                <label className="field-label" htmlFor="position">
+                  Position
                 </label>
                 <input
-                  id="yearLevel"
+                  id="position"
                   className="field-input"
-                  value={form.yearLevel}
-                  onChange={update('yearLevel')}
-                />
-              </div>
-
-              <div className="md:col-span-2">
-                <label className="field-label" htmlFor="program">
-                  Program
-                </label>
-                <input
-                  id="program"
-                  className="field-input"
-                  value={form.program}
-                  onChange={update('program')}
+                  value={form.position}
+                  onChange={update('position')}
                 />
               </div>
             </div>

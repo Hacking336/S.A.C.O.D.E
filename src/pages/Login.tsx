@@ -11,7 +11,7 @@ import { Seal } from '../components/Seal'
  * Logo       : /images/sacode-logo.png — 100px, centered above the wordmark.
  *              If that file is ever absent the drawn seal stands in for it.
  * Form       : just the Sign In button. No username, no password, no auth —
- *              clicking it routes straight to the Student Dashboard.
+ *              clicking it routes straight to the Instructor Dashboard.
  */
 /** Resolves a public file against the build's base path (root or /S.A.C.O.D.E/). */
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`

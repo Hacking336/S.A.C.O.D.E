@@ -37,7 +37,7 @@ export interface Announcement {
 
 export const currentUser = {
   name: 'Juan Dela Cruz',
-  role: 'Student',
+  role: 'Instructor',
   initials: 'JD',
   email: 'juan.delacruz@mabini.edu.ph',
 }
@@ -49,7 +49,7 @@ export const adminUser = {
   email: 'admin@mabini.edu.ph',
 }
 
-/* ---------------------------- Student ---------------------------- */
+/* -------------------------- Instructor --------------------------- */
 
 export const studentStats = [
   { key: 'submitted', label: 'Reports Submitted', value: 12, sub: 'All time', tone: 'blue', icon: 'file' },
@@ -100,7 +100,7 @@ export const reports: Report[] = [
     building: 'Building A - 2nd Floor',
     location: 'Computer Lab 1',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'PENDING',
     priority: 'High',
     date: 'May 16, 2025',
@@ -123,7 +123,7 @@ export const reports: Report[] = [
     building: 'Building B - Ground Floor',
     location: 'AVR Room',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'IN PROGRESS',
     priority: 'Medium',
     date: 'May 15, 2025',
@@ -141,7 +141,7 @@ export const reports: Report[] = [
     building: 'Building A - Ground Floor',
     location: 'Admin Office',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'PENDING',
     priority: 'Low',
     date: 'May 15, 2025',
@@ -159,7 +159,7 @@ export const reports: Report[] = [
     building: 'Building C - 2nd Floor',
     location: 'Room 304',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'RESOLVED',
     priority: 'Medium',
     date: 'May 14, 2025',
@@ -177,7 +177,7 @@ export const reports: Report[] = [
     building: 'Building D - 3rd Floor',
     location: 'Faculty Room',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'IN PROGRESS',
     priority: 'Critical',
     date: 'May 14, 2025',
@@ -195,7 +195,7 @@ export const reports: Report[] = [
     building: 'Building A - 3rd Floor',
     location: 'Computer Lab 2',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'RESOLVED',
     priority: 'High',
     date: 'May 12, 2025',
@@ -213,7 +213,7 @@ export const reports: Report[] = [
     building: 'Building B - Ground Floor',
     location: 'AVR Room',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'CANCELLED',
     priority: 'Low',
     date: 'May 11, 2025',
@@ -231,7 +231,7 @@ export const reports: Report[] = [
     building: 'Building C - 2nd Floor',
     location: 'Room 305',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'PENDING',
     priority: 'High',
     date: 'May 8, 2025',
@@ -249,7 +249,7 @@ export const reports: Report[] = [
     building: 'Building D - 3rd Floor',
     location: 'Faculty Room',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'IN PROGRESS',
     priority: 'Low',
     date: 'May 7, 2025',
@@ -267,7 +267,7 @@ export const reports: Report[] = [
     building: 'Building B - 2nd Floor',
     location: 'Room 204',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'RESOLVED',
     priority: 'Critical',
     date: 'May 5, 2025',
@@ -285,7 +285,7 @@ export const reports: Report[] = [
     building: 'Building B - Ground Floor',
     location: 'AVR Room',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'CANCELLED',
     priority: 'Low',
     date: 'May 3, 2025',
@@ -303,7 +303,7 @@ export const reports: Report[] = [
     building: 'Building B - 2nd Floor',
     location: 'Room 204',
     reportedBy: 'Juan Dela Cruz',
-    role: 'Student',
+    role: 'Instructor',
     status: 'RESOLVED',
     priority: 'Low',
     date: 'May 9, 2025',
@@ -607,7 +607,7 @@ export const announcementFeed: AnnouncementPost[] = [
     id: 2,
     title: 'New Reporting Guidelines',
     body:
-      'Starting this term, every damage report must include at least one clear photo of the affected unit and the serial number plate. Reports without a photo will be returned to the student for completion. Describe the fault in the order it happens so the maintenance team can reproduce the issue quickly.',
+      'Starting this term, every damage report must include at least one clear photo of the affected unit and the serial number plate. Reports without a photo will be returned to the instructor for completion. Describe the fault in the order it happens so the maintenance team can reproduce the issue quickly.',
     date: 'May 10, 2025',
     author: 'Admin User',
     category: 'Guidelines',
@@ -725,9 +725,9 @@ export const kbArticles: KBArticle[] = [
     id: 7,
     category: 'IT Support',
     title: 'Reset your S.A.C.O.D.E. password',
-    summary: 'Self-service steps for students and staff accounts.',
+    summary: 'Self-service steps for instructors and staff accounts.',
     body: [
-      'Open Help & Support and submit a ticket with the subject “Password reset”. Include your student number and the email attached to your account — never send your current password.',
+      'Open Help & Support and submit a ticket with the subject “Password reset”. Include your employee number and the email attached to your account — never send your current password.',
       'IT releases a one-time link valid for 30 minutes. Passwords must be at least eight characters and include a number; the system will not accept a password used in the last three resets.',
     ],
     updated: 'May 14, 2025',
@@ -736,9 +736,9 @@ export const kbArticles: KBArticle[] = [
     id: 8,
     category: 'IT Support',
     title: 'Connecting to the campus Wi-Fi',
-    summary: 'MABINI-STUDENT network, credentials and common errors.',
+    summary: 'MABINI-FACULTY network, credentials and common errors.',
     body: [
-      'Join MABINI-STUDENT and sign in with your student number as the username and your portal password. Accept the certificate prompt; the network uses a private CA, so the warning is expected on first connection.',
+      'Join MABINI-FACULTY and sign in with your employee number as the username and your portal password. Accept the certificate prompt; the network uses a private CA, so the warning is expected on first connection.',
       'If the device loops back to the sign-in page, forget the network and reconnect, or disable “private Wi-Fi address” for this network on iOS. Laboratory desktops are already configured and need no setup.',
     ],
     updated: 'Apr 29, 2025',
@@ -758,15 +758,14 @@ export const kbArticles: KBArticle[] = [
 
 /* ----------------------------- Profile --------------------------- */
 
-export const studentProfile = {
+export const instructorProfile = {
   fullName: 'Juan Dela Cruz',
-  role: 'Student',
+  role: 'Instructor',
   initials: 'JD',
   email: 'juan.delacruz@mabini.edu.ph',
-  studentId: '2022-00184',
+  employeeId: 'EMP-2019-042',
   department: 'College of Computer Studies',
-  program: 'BS Information Technology',
-  yearLevel: '3rd Year',
+  position: 'Instructor I',
   phone: '+63 917 555 0142',
-  memberSince: 'June 2022',
+  memberSince: 'June 2019',
 }
