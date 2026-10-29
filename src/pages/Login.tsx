@@ -35,7 +35,7 @@ export default function Login() {
           {logoSrc ? (
             <img
               src={logoSrc}
-              alt="S.A.C.O.D.E. logo"
+              alt="Campus Care logo"
               width={100}
               height={100}
               className="h-[100px] w-[100px] rounded-full object-contain"
@@ -46,7 +46,7 @@ export default function Login() {
               {/* probe for the logo file; replaces the seal when it exists */}
               <img
                 src="/images/sacode-logo.png"
-                alt="S.A.C.O.D.E. logo"
+                alt="Campus Care logo"
                 width={100}
                 height={100}
                 className="hidden"
@@ -55,8 +55,8 @@ export default function Login() {
               />
             </>
           )}
-          <h1 className="mt-4 text-[30px] font-extrabold tracking-[0.18em] text-white">
-            S.A.C.O.D.E.
+          <h1 className="mt-4 text-[32px] font-extrabold tracking-tight text-white">
+            Campus Care
           </h1>
           <p className="mt-1 max-w-md text-[13px] font-medium text-white">
             School Asset Condition Observation and Damage Evaluation
