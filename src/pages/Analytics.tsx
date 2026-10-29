@@ -144,7 +144,7 @@ export default function Analytics() {
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-[15.5px] font-bold text-slate-900">Reports Over Time</h2>
         </div>
-        <div className="h-[300px] w-full">
+        <div className="h-[230px] w-full sm:h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={reportsOverTime} margin={{ top: 8, right: 24, bottom: 4, left: -12 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#EEF1F6" vertical={false} />
@@ -179,7 +179,7 @@ export default function Analytics() {
       <section className="card mt-8 p-6">
         <h2 className="mb-5 text-[15.5px] font-bold text-slate-900">Reports by Category</h2>
         <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-[minmax(0,300px)_1fr]">
-          <div className="relative h-[260px] w-full">
+          <div className="relative h-[220px] w-full sm:h-[260px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie

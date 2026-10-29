@@ -16,6 +16,7 @@ import {
   Users,
   BarChart3,
   ScrollText,
+  X,
   type LucideIcon,
 } from 'lucide-react'
 import { BrandMark } from './Seal'
@@ -54,16 +55,36 @@ const ADMIN_NAV: NavItem[] = [
   { label: 'Audit Logs', to: '/admin/logs', icon: ScrollText },
 ]
 
-export function Sidebar({ variant }: { variant: 'student' | 'admin' }) {
+export function Sidebar({
+  variant,
+  open,
+  onClose,
+}: {
+  variant: 'student' | 'admin'
+  open: boolean
+  onClose: () => void
+}) {
   const navigate = useNavigate()
   const items = variant === 'student' ? STUDENT_NAV : ADMIN_NAV
   // /admin itself must stay active only on the admin dashboard route
   const end = (to: string) => to === '/admin'
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-30 flex w-[248px] flex-col bg-navy text-white shadow-[0_0_40px_rgba(11,17,38,0.35)]">
-      <div className="px-5 pb-5 pt-6">
+    <aside
+      className={`fixed inset-y-0 left-0 z-40 flex w-[248px] flex-col bg-navy text-white shadow-[0_0_40px_rgba(11,17,38,0.35)] transition-transform duration-300 ease-out lg:z-30 lg:translate-x-0 ${
+        open ? 'translate-x-0' : '-translate-x-full'
+      }`}
+    >
+      <div className="flex items-start justify-between gap-2 px-5 pb-5 pt-6">
         <BrandMark />
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close navigation"
+          className="grid h-8 w-8 shrink-0 place-items-center rounded-lg text-slate-300 transition hover:bg-white/10 hover:text-white lg:hidden"
+        >
+          <X className="h-4 w-4" />
+        </button>
       </div>
 
       <div className="mx-5 mb-3 h-px bg-white/10" />
@@ -75,6 +96,7 @@ export function Sidebar({ variant }: { variant: 'student' | 'admin' }) {
               <NavLink
                 to={item.to}
                 end={end(item.to)}
+                onClick={onClose}
                 className={({ isActive }) =>
                   `group flex items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium transition-colors ${
                     isActive
@@ -99,7 +121,10 @@ export function Sidebar({ variant }: { variant: 'student' | 'admin' }) {
       <div className="px-3 pb-3">
         <button
           type="button"
-          onClick={() => navigate('/')}
+          onClick={() => {
+            onClose()
+            navigate('/')
+          }}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
         >
           <LogOut className="h-[18px] w-[18px]" strokeWidth={1.9} />

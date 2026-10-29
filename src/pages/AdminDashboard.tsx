@@ -152,7 +152,31 @@ export default function AdminDashboard() {
           </Link>
         </div>
 
-        <div className="card overflow-x-auto">
+        {/* phone: one card per report */}
+        <div className="space-y-3 md:hidden">
+          {recentAdminReports.map((report) => (
+            <Link key={report.id} to={`/reports/${report.id}`} className="card block p-4">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="text-[12px] font-bold text-blue-600">{report.id}</p>
+                  <p className="truncate text-[14px] font-semibold text-slate-900">
+                    {report.equipment}
+                  </p>
+                  <p className="truncate text-[12.5px] text-slate-500">
+                    {report.location} · {report.reportedBy}
+                  </p>
+                </div>
+                <PriorityBadge priority={report.priority} />
+              </div>
+              <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-100 pt-3">
+                <StatusBadge status={report.status} />
+                <span className="text-[12px] text-slate-400">{report.date}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+        <div className="card hidden overflow-x-auto md:block">
           <table className="w-full min-w-[900px] border-collapse text-left">
             <thead>
               <tr className="border-b border-slate-200 bg-slate-50/80">

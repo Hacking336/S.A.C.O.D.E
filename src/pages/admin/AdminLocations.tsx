@@ -83,7 +83,34 @@ export default function AdminLocations() {
         </div>
       </div>
 
-      <div className="card overflow-hidden">
+      {/* ------------------------- Phone card list ------------------------ */}
+      <div className="space-y-3 md:hidden">
+        {rows.map((row) => (
+          <article key={row.id} className="card p-4">
+            <div className="flex items-start gap-3">
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-blue-50 text-blue-600">
+                <Building2 className="h-4 w-4" strokeWidth={1.9} />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[14px] font-semibold text-slate-900">{row.building}</p>
+                <p className="text-[12.5px] text-slate-500">
+                  {row.floor} · {row.room}
+                </p>
+                <p className="truncate text-[11.5px] text-slate-400">{row.department}</p>
+              </div>
+            </div>
+
+            <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-3">
+              <span className="text-[12px] text-slate-400">{row.id}</span>
+              <span className="inline-flex items-center rounded-md bg-slate-100 px-2.5 py-1 text-[11.5px] font-bold text-slate-700 ring-1 ring-inset ring-slate-200">
+                {row.equipmentCount} items
+              </span>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div className="card hidden overflow-hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[860px] border-collapse text-left">
             <thead>

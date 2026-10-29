@@ -111,7 +111,7 @@ export default function AdminReports() {
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex w-full flex-wrap items-center gap-2.5 sm:w-auto">
           <span className="rounded-lg bg-amber-50 px-3 py-2 text-[12.5px] font-semibold text-amber-700 ring-1 ring-inset ring-amber-200">
             {counts.pending} pending
           </span>
@@ -119,7 +119,7 @@ export default function AdminReports() {
             {counts.critical} critical
           </span>
 
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <Search
               className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
               strokeWidth={2}
@@ -129,13 +129,73 @@ export default function AdminReports() {
               placeholder="Search reports..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-[230px] rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13.5px] text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13.5px] text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100 sm:w-[230px]"
             />
           </div>
         </div>
       </div>
 
-      <div className="card overflow-hidden">
+      {/* ------------------------- Phone card list ------------------------ */}
+      <div className="space-y-3 md:hidden">
+        {filtered.map((report) => (
+          <article key={report.id} className="card p-4">
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-[12px] font-bold text-blue-600">{report.id}</p>
+                <p className="truncate text-[14px] font-semibold text-slate-900">
+                  {report.equipment}
+                </p>
+                <p className="truncate text-[12.5px] text-slate-500">
+                  {report.location} · {report.reportedBy}
+                </p>
+              </div>
+              <PriorityBadge priority={report.priority} />
+            </div>
+
+            <div className="mt-3 flex items-center gap-2">
+              <select
+                value={report.status}
+                onChange={(e) => setStatus(report.id, e.target.value as ReportStatus)}
+                aria-label={`Status for ${report.id}`}
+                className={`min-w-0 flex-1 rounded-lg border px-2.5 py-1.5 text-[11.5px] font-bold uppercase tracking-wide focus:outline-none focus:ring-4 focus:ring-blue-100 ${STATUS_TONE[report.status]}`}
+              >
+                {STATUS_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              <span className="shrink-0 text-[12px] text-slate-400">{report.date}</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => {
+                setAssigning(report)
+                setStaffId(maintenanceStaff[0].id)
+              }}
+              className="mt-2.5 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-[12.5px] font-semibold text-blue-700 transition hover:border-blue-600 hover:bg-blue-600 hover:text-white"
+            >
+              <UserPlus className="h-3.5 w-3.5" strokeWidth={2} />
+              Assign to Staff
+            </button>
+            <p className="mt-1.5 text-center text-[11px] text-slate-400">
+              {report.assignedTo ? `Assigned: ${report.assignedTo}` : 'Unassigned'}
+            </p>
+          </article>
+        ))}
+
+        {filtered.length === 0 && (
+          <div className="card px-4 py-10 text-center">
+            <p className="text-[14px] font-semibold text-slate-700">No reports found</p>
+            <p className="mt-1 text-[12.5px] text-slate-500">
+              Try another status tab or search term.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="card hidden overflow-hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1120px] border-collapse text-left">
             <thead>

@@ -28,7 +28,7 @@ export function Modal({ title, subtitle, onClose, children, width = 'max-w-lg' }
       aria-label={title}
     >
       <div
-        className={`w-full ${width} rounded-xl bg-white shadow-panel`}
+        className={`max-h-[calc(100dvh-2rem)] w-full ${width} overflow-y-auto rounded-xl bg-white shadow-panel`}
         onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 border-b border-slate-100 px-6 py-4">

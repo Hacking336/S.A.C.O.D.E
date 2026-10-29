@@ -119,7 +119,7 @@ export default function KnowledgeBase() {
                 </button>
 
                 {open && (
-                  <div className="border-t border-slate-100 bg-slate-50/60 px-5 py-4 pl-[76px]">
+                  <div className="border-t border-slate-100 bg-slate-50/60 px-5 py-4 sm:pl-[76px]">
                     <div className="space-y-3">
                       {article.body.map((paragraph, index) => (
                         <p key={index} className="text-[13.5px] leading-relaxed text-slate-600">

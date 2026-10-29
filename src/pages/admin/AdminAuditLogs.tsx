@@ -93,7 +93,35 @@ export default function AdminAuditLogs() {
         </div>
       </div>
 
-      <div className="card overflow-hidden">
+      {/* ------------------------- Phone card list ------------------------ */}
+      <div className="space-y-3 md:hidden">
+        {filtered.map((entry) => (
+          <article key={entry.id} className="card p-4">
+            <div className="flex flex-wrap items-center gap-2">
+              <span
+                className={`inline-flex items-center rounded-md px-2 py-1 text-[10.5px] font-bold tracking-wide ring-1 ring-inset ${ACTION_STYLES[entry.actionType]}`}
+              >
+                {entry.actionType.toUpperCase()}
+              </span>
+              <span className="text-[11.5px] text-slate-400">{entry.timestamp}</span>
+            </div>
+            <p className="mt-2 text-[13.5px] font-semibold text-slate-900">{entry.user}</p>
+            <p className="mt-1 text-[13px] leading-relaxed text-slate-600">{entry.action}</p>
+            <p className="mt-2 font-mono text-[11.5px] text-slate-400">{entry.ip}</p>
+          </article>
+        ))}
+
+        {filtered.length === 0 && (
+          <div className="card px-4 py-10 text-center">
+            <p className="text-[14px] font-semibold text-slate-700">No log entries match</p>
+            <p className="mt-1 text-[12.5px] text-slate-500">
+              Reset the filters to see the full activity trail.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="card hidden overflow-hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse text-left">
             <thead>

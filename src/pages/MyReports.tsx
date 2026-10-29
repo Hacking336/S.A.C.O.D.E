@@ -70,8 +70,8 @@ export default function MyReports() {
           ))}
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <div className="relative">
+        <div className="flex w-full items-center gap-2.5 sm:w-auto">
+          <div className="relative w-full sm:w-auto">
             <Search
               className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
               strokeWidth={2}
@@ -84,7 +84,7 @@ export default function MyReports() {
                 setQuery(e.target.value)
                 setPage(1)
               }}
-              className="w-[230px] rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13.5px] text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13.5px] text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100 sm:w-[230px]"
             />
           </div>
 
@@ -143,7 +143,7 @@ export default function MyReports() {
                 setSelectedId(report.id)
                 navigate(`/reports/${report.id}`)
               }}
-              className={`card flex w-full items-center gap-4 border-l-4 p-4 text-left transition hover:shadow-card-hover ${
+              className={`card flex w-full flex-wrap items-center gap-4 border-l-4 p-4 text-left transition hover:shadow-card-hover ${
                 selectedId === report.id
                   ? 'border-l-blue-600'
                   : 'border-l-transparent hover:border-l-slate-300'
@@ -166,7 +166,9 @@ export default function MyReports() {
                 </p>
               </div>
 
-              <StatusBadge status={report.status as ReportStatus} />
+              <span className="ml-auto shrink-0">
+                <StatusBadge status={report.status as ReportStatus} />
+              </span>
             </button>
           ))}
         </div>

@@ -21,7 +21,7 @@ export default function Login() {
 
   return (
     <div
-      className="relative h-screen w-screen overflow-hidden bg-[#16264a]"
+      className="relative min-h-[100dvh] w-full overflow-hidden bg-[#16264a]"
       style={{
         backgroundImage: `url('${asset('images/school-building-night.jpg')}')`,
         backgroundSize: 'cover',
@@ -32,7 +32,7 @@ export default function Login() {
       {/* semi-transparent dark overlay so white text stays readable */}
       <div className="absolute inset-0 bg-black/50" aria-hidden="true" />
 
-      <div className="relative z-10 flex h-full flex-col overflow-y-auto px-4 py-8">
+      <div className="relative z-10 flex min-h-[100dvh] flex-col px-4 py-6 sm:py-8">
         {/* ---------------------------- Header ---------------------------- */}
         <header className="flex flex-col items-center text-center">
           {logoSrc ? (

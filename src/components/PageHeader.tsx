@@ -30,7 +30,7 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
   const switchTo = variant === 'student' ? '/admin' : '/dashboard'
 
   return (
-    <header className="mb-6 flex flex-wrap items-start justify-between gap-4">
+    <header className="mb-5 flex flex-wrap items-start justify-between gap-3 sm:mb-6 sm:gap-4">
       <div className="flex items-start gap-3">
         {backTo && (
           <button
@@ -43,12 +43,14 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
           </button>
         )}
         <div>
-          <h1 className="text-[26px] font-bold leading-tight text-slate-900">{title}</h1>
+          <h1 className="text-[21px] font-bold leading-tight text-slate-900 sm:text-[26px]">
+            {title}
+          </h1>
           {subtitle && <p className="mt-1.5 text-sm text-slate-500">{subtitle}</p>}
         </div>
       </div>
 
-      <div className="flex items-center gap-2.5">
+      <div className="flex flex-wrap items-center justify-end gap-2 sm:gap-2.5">
         {extra}
 
         <button
@@ -62,7 +64,7 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
 
         <button
           type="button"
-          className="grid h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 shadow-card transition hover:bg-slate-50"
+          className="hidden h-10 w-10 place-items-center rounded-lg border border-slate-200 bg-white text-slate-600 shadow-card transition hover:bg-slate-50 sm:grid"
           aria-label="Messages"
         >
           <MessageCircle className="h-[18px] w-[18px]" strokeWidth={1.9} />

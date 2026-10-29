@@ -95,7 +95,7 @@ export default function Equipment({ variant = 'student' }: { variant?: 'student'
           ))}
         </div>
 
-        <div className="flex flex-wrap items-center gap-2.5">
+        <div className="flex w-full flex-wrap items-center gap-2.5 sm:w-auto">
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -109,7 +109,7 @@ export default function Equipment({ variant = 'student' }: { variant?: 'student'
             ))}
           </select>
 
-          <div className="relative">
+          <div className="relative w-full sm:w-auto">
             <Search
               className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
               strokeWidth={2}
@@ -119,14 +119,56 @@ export default function Equipment({ variant = 'student' }: { variant?: 'student'
               placeholder="Search equipment, ID or room..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-[260px] rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13.5px] text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
+              className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13.5px] text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100 sm:w-[260px]"
             />
           </div>
         </div>
       </div>
 
+      {/* ------------------------- Phone card list ------------------------ */}
+      <div className="space-y-3 md:hidden">
+        {filtered.map((item) => (
+          <article key={item.id} className="card p-4">
+            <div className="flex items-start gap-3">
+              <EquipmentThumb category={item.category} className="h-11 w-11" />
+              <div className="min-w-0 flex-1">
+                <p className="text-[12px] font-bold text-blue-600">{item.id}</p>
+                <p className="truncate text-[14px] font-semibold text-slate-900">{item.name}</p>
+                <p className="truncate text-[12.5px] text-slate-500">{item.brand}</p>
+              </div>
+              <StatusPill status={item.status} />
+            </div>
+
+            <div className="mt-3 flex items-center justify-between gap-2 border-t border-slate-100 pt-3 text-[12px]">
+              <span className="min-w-0 truncate text-slate-600">
+                {item.room} · {item.building}
+              </span>
+              <span className="shrink-0 text-slate-400">Serviced {item.lastServiced}</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => navigate('/report-damage')}
+              className="mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-[12.5px] font-semibold text-blue-700 transition hover:border-blue-600 hover:bg-blue-600 hover:text-white"
+            >
+              <FileWarning className="h-3.5 w-3.5" strokeWidth={2} />
+              Report Issue
+            </button>
+          </article>
+        ))}
+
+        {filtered.length === 0 && (
+          <div className="card px-4 py-10 text-center">
+            <p className="text-[14px] font-semibold text-slate-700">No equipment found</p>
+            <p className="mt-1 text-[12.5px] text-slate-500">
+              Adjust your search, category or status.
+            </p>
+          </div>
+        )}
+      </div>
+
       {/* ---------------------------- Data table --------------------------- */}
-      <div className="card overflow-hidden">
+      <div className="card hidden overflow-hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[960px] border-collapse text-left">
             <thead>

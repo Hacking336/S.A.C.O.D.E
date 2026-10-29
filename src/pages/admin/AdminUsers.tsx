@@ -132,10 +132,8 @@ export default function AdminUsers() {
               {role === 'All' ? 'All roles' : role}
             </button>
           ))}
-        </div>
-
-        <div className="relative">
-          <Search
+        </div>          <div className="relative w-full sm:w-auto">
+            <Search
             className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
             strokeWidth={2}
           />
@@ -144,12 +142,87 @@ export default function AdminUsers() {
             placeholder="Search name, email or department..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-[280px] rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13.5px] text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100"
+            className="w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-9 pr-3 text-[13.5px] text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-100 sm:w-[280px]"
           />
         </div>
       </div>
 
-      <div className="card overflow-hidden">
+      {/* ------------------------- Phone card list ------------------------ */}
+      <div className="space-y-3 md:hidden">
+        {filtered.map((user) => (
+          <article key={user.id} className="card p-4">
+            <div className="flex items-start gap-3">
+              <span
+                className={`grid h-10 w-10 shrink-0 place-items-center rounded-full text-[12.5px] font-bold text-white ${
+                  user.role === 'Admin'
+                    ? 'bg-blue-600'
+                    : user.role === 'Maintenance Staff'
+                      ? 'bg-emerald-600'
+                      : 'bg-slate-400'
+                }`}
+              >
+                {user.initials}
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-[14px] font-semibold text-slate-900">{user.name}</p>
+                <p className="truncate text-[12.5px] text-slate-500">{user.email}</p>
+                <p className="truncate text-[11.5px] text-slate-400">{user.department}</p>
+              </div>
+            </div>
+
+            <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-slate-100 pt-3">
+              <span
+                className={`inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10.5px] font-bold tracking-wide ring-1 ring-inset ${ROLE_STYLES[user.role]}`}
+              >
+                {user.role === 'Admin' && <ShieldCheck className="h-3 w-3" strokeWidth={2.4} />}
+                {user.role.toUpperCase()}
+              </span>
+              <span
+                className={`inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[10.5px] font-bold uppercase tracking-wide ring-1 ring-inset ${
+                  user.status === 'Active'
+                    ? 'bg-green-100 text-green-700 ring-green-200'
+                    : 'bg-slate-100 text-slate-500 ring-slate-200'
+                }`}
+              >
+                <span
+                  className={`h-1.5 w-1.5 rounded-full ${
+                    user.status === 'Active' ? 'bg-green-500' : 'bg-slate-400'
+                  }`}
+                />
+                {user.status}
+              </span>
+              <button
+                type="button"
+                onClick={() =>
+                  setDraft({
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role,
+                    department: user.department,
+                    status: user.status,
+                  })
+                }
+                className="ml-auto inline-flex items-center gap-1.5 rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-[12.5px] font-semibold text-slate-600 transition hover:border-blue-500 hover:text-blue-700"
+              >
+                <Pencil className="h-3.5 w-3.5" strokeWidth={2} />
+                Edit
+              </button>
+            </div>
+          </article>
+        ))}
+
+        {filtered.length === 0 && (
+          <div className="card px-4 py-10 text-center">
+            <p className="text-[14px] font-semibold text-slate-700">No users match your filters</p>
+            <p className="mt-1 text-[12.5px] text-slate-500">
+              Try a different role or search term.
+            </p>
+          </div>
+        )}
+      </div>
+
+      <div className="card hidden overflow-hidden md:block">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[980px] border-collapse text-left">
             <thead>

@@ -96,11 +96,11 @@ export default function ReportDetails() {
           <section className="card p-6">
             <SectionTitle>Damage Photos</SectionTitle>
 
-            <div className="grid h-[300px] w-full place-items-center overflow-hidden rounded-xl bg-slate-100">
+            <div className="grid h-[220px] w-full place-items-center overflow-hidden rounded-xl bg-slate-100 sm:h-[300px]">
               <Photo src={activePhoto} category={report.category} />
             </div>
 
-            <div className="mt-3 flex gap-3">
+            <div className="mt-3 flex gap-3 overflow-x-auto pb-1">
               {photos.map((photo, index) => (
                 <button
                   key={index}
