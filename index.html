@@ -2,18 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <script>
-      // GitHub project pages serve this build from /S.A.C.O.D.E/. When the URL
-      // carries that mount, aim the root-relative asset URLs at it, so one
-      // artifact works both there and on a custom domain served from the root.
-      (function () {
-        var mount = location.pathname.match(/^\/S\.A\.C\.O\.D\.E(?=\/|$)/i)
-        if (!mount) return
-        var base = document.createElement('base')
-        base.href = mount[0] + '/'
-        document.head.appendChild(base)
-      })()
-    </script>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Campus Care | Mabini Colleges, Inc.</title>

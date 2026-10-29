@@ -12,6 +12,9 @@ import { Seal } from '../components/Seal'
  * Form       : just the Sign In button. No username, no password, no auth —
  *              clicking it routes straight to the Student Dashboard.
  */
+/** Resolves a public file against the build's base path (root or /S.A.C.O.D.E/). */
+const asset = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`
+
 export default function Login() {
   const navigate = useNavigate()
   const [logoSrc, setLogoSrc] = useState<string | null>(null)
@@ -20,7 +23,7 @@ export default function Login() {
     <div
       className="relative h-screen w-screen overflow-hidden bg-[#16264a]"
       style={{
-        backgroundImage: "url('/images/school-building-night.jpg')",
+        backgroundImage: `url('${asset('images/school-building-night.jpg')}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -45,7 +48,7 @@ export default function Login() {
               <Seal size={100} />
               {/* probe for the logo file; replaces the seal when it exists */}
               <img
-                src="/images/sacode-logo.png"
+                src={asset('images/sacode-logo.png')}
                 alt="Campus Care logo"
                 width={100}
                 height={100}

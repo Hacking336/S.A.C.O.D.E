@@ -5,12 +5,11 @@ import App from './App'
 import './index.css'
 
 /**
- * GitHub project pages host this build under /S.A.C.O.D.E/, while a custom
- * domain (and the dev server) serve it from the root. Mirroring the base tag
- * set in index.html keeps the router's idea of "/" correct in both cases.
+ * Vite's base already points at whichever mount the build targets
+ * (/S.A.C.O.D.E/ on GitHub project pages, / on a custom domain or dev server),
+ * so the router takes its basename from the same value instead of guessing.
  */
-const MOUNT = /^\/S\.A\.C\.O\.D\.E(?=\/|$)/i
-const basename = window.location.pathname.match(MOUNT)?.[0] ?? '/'
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
