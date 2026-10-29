@@ -27,8 +27,6 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
     return () => document.removeEventListener('mousedown', onClick)
   }, [open])
 
-  const switchTo = variant === 'student' ? '/admin' : '/dashboard'
-
   return (
     <header className="mb-5 flex flex-wrap items-start justify-between gap-3 sm:mb-6 sm:gap-4">
       <div className="flex items-start gap-3">
@@ -97,14 +95,18 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
                 <p className="truncate text-[11.5px] text-slate-500">{user.email}</p>
               </div>
               <div className="my-1 h-px bg-slate-100" />
-              <Link
-                to={switchTo}
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2.5 px-4 py-2.5 text-[13px] text-slate-700 hover:bg-slate-50"
-              >
-                <RefreshCw className="h-4 w-4 text-slate-400" />
-                {variant === 'student' ? 'Switch to Admin view' : 'Switch to Student view'}
-              </Link>
+              {/* Students get no shortcut into the admin side — that door is
+                  /admin/login. Admins may still preview the student view. */}
+              {variant === 'admin' && (
+                <Link
+                  to="/dashboard"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-[13px] text-slate-700 hover:bg-slate-50"
+                >
+                  <RefreshCw className="h-4 w-4 text-slate-400" />
+                  Switch to Student view
+                </Link>
+              )}
               <button
                 type="button"
                 onClick={() => navigate('/')}

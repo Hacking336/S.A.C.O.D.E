@@ -123,7 +123,7 @@ export function Sidebar({
           type="button"
           onClick={() => {
             onClose()
-            navigate('/')
+            navigate(variant === 'admin' ? '/admin/login' : '/')
           }}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
         >

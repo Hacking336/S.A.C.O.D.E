@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import { AppLayout } from './layouts/AppLayout'
 import Login from './pages/Login'
+import AdminLogin from './pages/AdminLogin'
 import StudentDashboard from './pages/StudentDashboard'
 import ReportDamage from './pages/ReportDamage'
 import MyReports from './pages/MyReports'
@@ -24,6 +25,7 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
 
       {/* --------------------------- Student --------------------------- */}
       <Route element={<AppLayout variant="student" />}>

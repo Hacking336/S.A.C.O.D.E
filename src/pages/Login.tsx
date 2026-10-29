@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { ShieldCheck } from 'lucide-react'
 import { Seal } from '../components/Seal'
 
 /**
@@ -79,8 +80,15 @@ export default function Login() {
         </main>
 
         {/* ---------------------------- Footer ---------------------------- */}
-        <footer className="text-center text-[12px] text-white">
-          © 2025 Mabini Colleges, Inc. All rights reserved.
+        <footer className="flex flex-col items-center gap-2.5 text-center text-[12px] text-white">
+          <Link
+            to="/admin/login"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/30 px-3 py-1.5 text-[12px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10 hover:text-white"
+          >
+            <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2.2} />
+            Administrator sign in
+          </Link>
+          <p className="text-white/80">© 2025 Mabini Colleges, Inc. All rights reserved.</p>
         </footer>
       </div>
     </div>
