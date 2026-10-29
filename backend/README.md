@@ -1,6 +1,6 @@
-# S.A.C.O.D.E. — Spring Boot API
+# Campus Care — Spring Boot API
 
-REST API backing the S.A.C.O.D.E. front end. Talks to Supabase Postgres
+REST API backing the Campus Care front end. Talks to Supabase Postgres
 over plain JDBC (`JdbcTemplate`), so the SQL stays explicit.
 
 ## Requirements

@@ -30,7 +30,7 @@ public class CacheWarmer {
         } catch (RuntimeException ex) {
             // Database not reachable yet (e.g. local startup before Supabase
             // credentials are set). The services lazily rebuild on first use.
-            System.err.println("[S.A.C.O.D.E.] Cache warm-up skipped: " + ex.getMessage());
+            System.err.println("[Campus Care] Cache warm-up skipped: " + ex.getMessage());
         }
     }
 }

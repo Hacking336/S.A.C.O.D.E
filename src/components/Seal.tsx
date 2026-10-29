@@ -222,8 +222,8 @@ export function BrandMark({ className = '' }: { className?: string }) {
         />
       )}
       <div className="min-w-0">
-        <div className="truncate text-[15px] font-extrabold tracking-wide text-white">
-          S.A.C.O.D.E.
+        <div className="truncate text-[16px] font-extrabold tracking-tight text-white">
+          Campus Care
         </div>
         <div className="truncate text-[10px] font-medium text-blue-200/70">
           Mabini Colleges, Inc.

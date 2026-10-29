@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------------
-   S.A.C.O.D.E. mock data
+   Campus Care mock data
    Mirrors the values printed on the UI mockups 1:1 so the screens
    render identically before the Spring Boot API is wired up.
 ------------------------------------------------------------------ */
@@ -76,7 +76,7 @@ export const announcements: Announcement[] = [
   {
     id: 3,
     title: 'System Update',
-    description: 'S.A.C.O.D.E. will have a system update on May 18, 2025 (Sunday).',
+    description: 'Campus Care will have a system update on May 18, 2025 (Sunday).',
     date: 'May 8, 2025',
     tone: 'blue',
   },
@@ -614,7 +614,7 @@ export const announcementFeed: AnnouncementPost[] = [
   },
   {
     id: 3,
-    title: 'S.A.C.O.D.E. System Update',
+    title: 'Campus Care System Update',
     body:
       'The platform will be offline on Sunday, May 18, 2025 from 1:00 AM to 4:00 AM while the database is migrated to the new server. Reports submitted before the update are safe and will appear unchanged once the system is back online.',
     date: 'May 8, 2025',
@@ -724,7 +724,7 @@ export const kbArticles: KBArticle[] = [
   {
     id: 7,
     category: 'IT Support',
-    title: 'Reset your S.A.C.O.D.E. password',
+    title: 'Reset your Campus Care password',
     summary: 'Self-service steps for instructors and staff accounts.',
     body: [
       'Open Help & Support and submit a ticket with the subject “Password reset”. Include your employee number and the email attached to your account — never send your current password.',

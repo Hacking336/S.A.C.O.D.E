@@ -4,7 +4,7 @@ import { ShieldCheck } from 'lucide-react'
 import { Seal } from '../components/Seal'
 
 /**
- * S.A.C.O.D.E. Sign-In page.
+ * Campus Care Sign-In page.
  *
  * Background : /images/school-building-night.jpg — cover / center / no-repeat
  *              + a bg-black/50 overlay for readability.

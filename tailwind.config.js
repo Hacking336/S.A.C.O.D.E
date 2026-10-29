@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // S.A.C.O.D.E. brand tokens taken straight from the mockups
+        // Campus Care brand tokens taken straight from the mockups
         navy: {
           DEFAULT: '#1B2A4E',
           light: '#223563',

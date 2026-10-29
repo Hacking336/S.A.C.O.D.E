@@ -15,7 +15,7 @@
   <artifactId>sacode-backend</artifactId>
   <version>1.0.0</version>
   <name>sacode-backend</name>
-  <description>S.A.C.O.D.E. — School Asset Condition Observation and Damage Evaluation API</description>
+  <description>Campus Care — School Asset Condition Observation and Damage Evaluation API</description>
 
   <properties>
     <java.version>17</java.version>

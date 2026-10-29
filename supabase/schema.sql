@@ -1,5 +1,5 @@
 -- =====================================================================
---  S.A.C.O.D.E. — Supabase (PostgreSQL) schema
+--  Campus Care — Supabase (PostgreSQL) schema
 --  School Asset Condition Observation and Damage Evaluation
 --  Mabini Colleges, Inc. — Daet, Camarines Norte
 --
@@ -251,4 +251,4 @@ insert into public.report_history (report_id, actor_id, action, previous_status,
 insert into public.announcements (title, content, tone, published_at) values
   ('Maintenance Schedule',    'The computer laboratory will undergo maintenance on May 20, 2025.', 'blue', '2025-05-15 08:00:00+08'),
   ('New Reporting Guidelines','Please follow the new guidelines when submitting a defect report.', 'red',  '2025-05-10 08:00:00+08'),
-  ('System Update',           'S.A.C.O.D.E. will have a system update on May 18, 2025 (Sunday).', 'blue', '2025-05-08 08:00:00+08');
+  ('System Update',           'Campus Care will have a system update on May 18, 2025 (Sunday).', 'blue', '2025-05-08 08:00:00+08');

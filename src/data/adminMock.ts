@@ -1,7 +1,7 @@
 import type { Priority, ReportStatus } from './mock'
 
 /* ------------------------------------------------------------------
-   S.A.C.O.D.E. — mock data for the Admin modules.
+   Campus Care — mock data for the Admin modules.
    Shaped to mirror the eventual Spring Boot / Supabase endpoints:
      GET /api/locations        GET /api/staff
      GET /api/users            GET /api/audit-logs

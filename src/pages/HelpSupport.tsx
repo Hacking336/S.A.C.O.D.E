@@ -29,7 +29,7 @@ export default function HelpSupport() {
     <>
       <PageHeader
         title="Help & Support"
-        subtitle="Get assistance with S.A.C.O.D.E."
+        subtitle="Get assistance with Campus Care"
         variant="student"
       />
 
@@ -42,7 +42,7 @@ export default function HelpSupport() {
           </div>
 
           <p className="text-[13.5px] leading-relaxed text-slate-500">
-            Reach the S.A.C.O.D.E. support team directly. For urgent safety hazards — exposed
+            Reach the Campus Care support team directly. For urgent safety hazards — exposed
             wiring, leaking air-conditioners or sparking outlets — call the IT office instead of
             filing a ticket.
           </p>

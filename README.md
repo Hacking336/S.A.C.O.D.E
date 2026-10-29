@@ -1,4 +1,4 @@
-# S.A.C.O.D.E.
+# Campus Care
 
 **School Asset Condition Observation and Damage Evaluation** — Mabini Colleges, Inc., Daet, Camarines Norte.
 
@@ -14,7 +14,7 @@ Supabase (PostgreSQL) database.
 ├── index.html                 Vite entry
 ├── public/images/
 │   ├── school-building-night.jpg  night-building photo for the Sign-In screen
-│   ├── sacode-logo.png            S.A.C.O.D.E. / Mabini Colleges seal
+│   ├── sacode-logo.png            Campus Care / Mabini Colleges seal
 │   └── photos/                damage photos shown in Report Details
 ├── src/
 │   ├── components/            Sidebar, PageHeader, Seal, badges, StatCard, thumb
