@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react'
-import { Search, UserPlus } from 'lucide-react'
+import { ArrowUpNarrowWide, Search, UserPlus } from 'lucide-react'
 import { PageHeader } from '../../components/PageHeader'
 import { Modal } from '../../components/Modal'
 import { PriorityBadge } from '../../components/Badges'
 import { EquipmentThumb } from '../../components/EquipmentThumb'
+import { ReportPriorityQueue } from '../../lib/reportPriorityQueue'
 import {
   allReports,
   maintenanceStaff,
@@ -44,7 +45,7 @@ export default function AdminReports() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    return rows.filter((report) => {
+    const matches = rows.filter((report) => {
       const matchesTab = tab === 'All' || report.status === STATUS_BY_TAB[tab]
       const matchesQuery =
         !q ||
@@ -53,6 +54,9 @@ export default function AdminReports() {
         )
       return matchesTab && matchesQuery
     })
+
+    // DSA #1 — the max heap always hands back Critical before Low.
+    return ReportPriorityQueue.from(matches).drainSorted()
   }, [rows, tab, query])
 
   const setStatus = (id: string, status: ReportStatus) =>
@@ -89,7 +93,7 @@ export default function AdminReports() {
     <>
       <PageHeader
         title="Reports"
-        subtitle="Review and manage all campus damage reports."
+        subtitle="Review and manage every campus damage report, most urgent first."
         variant="admin"
       />
 
@@ -117,6 +121,10 @@ export default function AdminReports() {
           </span>
           <span className="rounded-lg bg-red-50 px-3 py-2 text-[12.5px] font-semibold text-red-700 ring-1 ring-inset ring-red-200">
             {counts.critical} critical
+          </span>
+          <span className="hidden items-center gap-1.5 rounded-lg bg-blue-50 px-3 py-2 text-[12.5px] font-semibold text-blue-700 ring-1 ring-inset ring-blue-200 lg:inline-flex">
+            <ArrowUpNarrowWide className="h-3.5 w-3.5" strokeWidth={2} />
+            Urgent first
           </span>
 
           <div className="relative w-full sm:w-auto">
@@ -304,8 +312,8 @@ export default function AdminReports() {
       </div>
 
       <p className="mt-4 text-[13px] text-slate-500">
-        Showing {filtered.length} of {rows.length} reports · status changes are local until the API
-        is connected
+        Showing {filtered.length} of {rows.length} reports · ordered by the priority queue (max
+        heap: Critical → High → Medium → Low) · status changes are local until the API is connected
       </p>
 
       {assigning && (

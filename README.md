@@ -78,6 +78,10 @@ the location of each data structure.
 | HashMap | `backend/.../dsa/EquipmentIndex.java` | O(1) equipment lookup by id / code / serial / room |
 | Trie | `backend/.../dsa/Trie.java` | Prefix autocomplete for the report and equipment search bars |
 
+The admin report lists use the same max-heap on the front end today
+(`src/lib/reportPriorityQueue.ts`), so the mock screens already render in
+urgency order — Critical → High → Medium → Low, newest first on ties.
+
 ## Verification run
 
 ```bash

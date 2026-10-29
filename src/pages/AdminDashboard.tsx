@@ -1,12 +1,16 @@
 import { Link } from 'react-router-dom'
 import { Bar, BarChart, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
-import { Eye, ChevronRight } from 'lucide-react'
+import { ArrowUpNarrowWide, Eye, ChevronRight } from 'lucide-react'
 import { PageHeader } from '../components/PageHeader'
 import { StatCard, type Tone } from '../components/StatCard'
 import { StatusBadge, PriorityBadge } from '../components/Badges'
 import { adminStats, recentAdminReports, reportsByPriority, reportsByStatus } from '../data/mock'
+import { ReportPriorityQueue } from '../lib/reportPriorityQueue'
 
 const AXIS_TICK = { fill: '#94A3B8', fontSize: 12 }
+
+// DSA #1 — max heap: Critical first, then High, Medium, Low.
+const recentReportsByUrgency = ReportPriorityQueue.from(recentAdminReports).drainSorted()
 
 function ChartCard({
   title,
@@ -141,8 +145,14 @@ export default function AdminDashboard() {
 
       {/* -------------------------- Recent reports ------------------------ */}
       <section className="mt-8">
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-[17px] font-bold text-slate-900">Recent Reports</h2>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <h2 className="text-[17px] font-bold text-slate-900">Recent Reports</h2>
+            <span className="hidden items-center gap-1.5 rounded-md bg-blue-50 px-2 py-1 text-[10.5px] font-bold uppercase tracking-wide text-blue-700 ring-1 ring-inset ring-blue-200 sm:inline-flex">
+              <ArrowUpNarrowWide className="h-3 w-3" strokeWidth={2.2} />
+              Urgent first
+            </span>
+          </div>
           <Link
             to="/admin/reports"
             className="flex items-center gap-1 text-[13px] font-semibold text-blue-600 hover:text-blue-700"
@@ -154,7 +164,7 @@ export default function AdminDashboard() {
 
         {/* phone: one card per report */}
         <div className="space-y-3 md:hidden">
-          {recentAdminReports.map((report) => (
+          {recentReportsByUrgency.map((report) => (
             <Link key={report.id} to={`/reports/${report.id}`} className="card block p-4">
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
@@ -193,7 +203,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody>
-              {recentAdminReports.map((report) => (
+              {recentReportsByUrgency.map((report) => (
                 <tr
                   key={report.id}
                   className="border-b border-slate-100 transition last:border-0 hover:bg-slate-50/70"
