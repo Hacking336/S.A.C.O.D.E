@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Bell, MessageCircle, ChevronDown, LogOut, RefreshCw } from 'lucide-react'
+import { ArrowLeft, Bell, MessageCircle, ChevronDown, LogOut, RefreshCw, UserRound } from 'lucide-react'
 import { adminUser, currentUser } from '../data/mock'
+import { UserAvatar } from './Avatar'
 
 interface PageHeaderProps {
   title: ReactNode
@@ -74,13 +75,11 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
             onClick={() => setOpen((v) => !v)}
             className="flex items-center gap-3 rounded-lg border border-slate-200 bg-white py-1.5 pl-1.5 pr-3 shadow-card transition hover:bg-slate-50"
           >
-            <span
-              className={`grid h-8 w-8 place-items-center rounded-full text-[12px] font-bold text-white ${
-                variant === 'instructor' ? 'bg-blue-600' : 'bg-indigo-600'
-              }`}
-            >
-              {user.initials}
-            </span>
+            <UserAvatar
+              variant={variant}
+              initials={user.initials}
+              tone={variant === 'instructor' ? 'bg-blue-600' : 'bg-indigo-600'}
+            />
             <span className="hidden text-left leading-tight sm:block">
               <span className="block text-[13px] font-semibold text-slate-800">{user.name}</span>
               <span className="block text-[11px] text-slate-500">{user.role}</span>
@@ -95,6 +94,14 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
                 <p className="truncate text-[11.5px] text-slate-500">{user.email}</p>
               </div>
               <div className="my-1 h-px bg-slate-100" />
+              <Link
+                to={variant === 'admin' ? '/admin/profile' : '/profile'}
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2.5 px-4 py-2.5 text-[13px] text-slate-700 hover:bg-slate-50"
+              >
+                <UserRound className="h-4 w-4 text-slate-400" />
+                My Profile
+              </Link>
               {/* Instructors get no shortcut into the admin side — that door is
                   /admin/login. Admins may still preview the instructor view. */}
               {variant === 'admin' && (

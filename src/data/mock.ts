@@ -769,3 +769,15 @@ export const instructorProfile = {
   phone: '+63 917 555 0142',
   memberSince: 'June 2019',
 }
+
+export const adminProfile = {
+  fullName: 'Admin User',
+  role: 'System Administrator',
+  initials: 'AU',
+  email: 'admin@mabini.edu.ph',
+  employeeId: 'ADM-2021-001',
+  department: 'Management Information Systems',
+  position: 'System Administrator',
+  phone: '+63 917 555 0199',
+  memberSince: 'August 2021',
+}

@@ -53,6 +53,7 @@ export default function App() {
         <Route path="/admin/staff" element={<AdminStaff />} />
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/announcements" element={<AdminAnnouncements />} />
+        <Route path="/admin/profile" element={<Profile variant="admin" />} />
         <Route path="/admin/logs" element={<AdminAuditLogs />} />
         {/* legacy sidebar path kept as an alias */}
         <Route path="/admin/audit-logs" element={<AdminAuditLogs />} />
