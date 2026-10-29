@@ -2,8 +2,6 @@ import { useState } from 'react'
 import {
   Building2,
   GraduationCap,
-  KeyRound,
-  Lock,
   Mail,
   Save,
   ShieldCheck,
@@ -195,83 +193,6 @@ export default function Profile() {
               >
                 <Save className="h-4 w-4" strokeWidth={2} />
                 Save Changes
-              </button>
-            </div>
-          </section>
-
-          {/* --------------------------- Password --------------------------- */}
-          <section className="card p-6">
-            <div className="mb-5 flex items-center gap-2.5">
-              <span className="h-4 w-1 rounded-full bg-blue-600" />
-              <h2 className="text-[15.5px] font-bold text-slate-900">Change Password</h2>
-            </div>
-
-            <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
-              <div>
-                <label className="field-label" htmlFor="currentPassword">
-                  Current Password
-                </label>
-                <div className="relative">
-                  <Lock
-                    className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                    strokeWidth={1.9}
-                  />
-                  <input
-                    id="currentPassword"
-                    type="password"
-                    placeholder="••••••••"
-                    className="field-input pl-10"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="field-label" htmlFor="newPassword">
-                  New Password
-                </label>
-                <div className="relative">
-                  <KeyRound
-                    className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                    strokeWidth={1.9}
-                  />
-                  <input
-                    id="newPassword"
-                    type="password"
-                    placeholder="At least 8 characters"
-                    className="field-input pl-10"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="field-label" htmlFor="confirmPassword">
-                  Confirm New Password
-                </label>
-                <div className="relative">
-                  <KeyRound
-                    className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
-                    strokeWidth={1.9}
-                  />
-                  <input
-                    id="confirmPassword"
-                    type="password"
-                    placeholder="Re-type new password"
-                    className="field-input pl-10"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-5">
-              <p className="text-[12.5px] text-slate-400">
-                Password changes are handled by the IT department for now.
-              </p>
-              <button
-                type="button"
-                disabled
-                className="cursor-not-allowed rounded-lg border border-slate-300 bg-slate-100 px-4 py-2.5 text-[13.5px] font-semibold text-slate-500 opacity-70"
-              >
-                Update Password
               </button>
             </div>
           </section>
