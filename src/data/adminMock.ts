@@ -71,11 +71,11 @@ export interface MaintenanceStaff {
 }
 
 export const maintenanceStaff: MaintenanceStaff[] = [
-  { id: 'STF-01', name: 'Rey Manalo', initials: 'RM', specialty: 'IT / Computers', status: 'On Task', assigned: ['REP-2025-0011'], phone: '+63 917 220 1188', shift: '8:00 AM – 5:00 PM' },
+  { id: 'STF-01', name: 'Rey Manalo', initials: 'RM', specialty: 'IT / Computers', status: 'On Task', assigned: [], phone: '+63 917 220 1188', shift: '8:00 AM – 5:00 PM' },
   { id: 'STF-02', name: 'Tessie Bautista', initials: 'TB', specialty: 'Electrical', status: 'Available', assigned: [], phone: '+63 917 220 1192', shift: '8:00 AM – 5:00 PM' },
   { id: 'STF-03', name: 'Nilo Garcia', initials: 'NG', specialty: 'Plumbing', status: 'Available', assigned: [], phone: '+63 917 220 1204', shift: '7:00 AM – 4:00 PM' },
-  { id: 'STF-04', name: 'Maricel Dizon', initials: 'MD', specialty: 'General Repair', status: 'On Task', assigned: ['REP-2025-0003', 'REP-2025-0009'], phone: '+63 917 220 1217', shift: '8:00 AM – 5:00 PM' },
-  { id: 'STF-05', name: 'Joel Ramos', initials: 'JR', specialty: 'Air Conditioning', status: 'On Task', assigned: ['REP-2025-0008'], phone: '+63 917 220 1223', shift: '8:00 AM – 5:00 PM' },
+  { id: 'STF-04', name: 'Maricel Dizon', initials: 'MD', specialty: 'General Repair', status: 'On Task', assigned: [], phone: '+63 917 220 1217', shift: '8:00 AM – 5:00 PM' },
+  { id: 'STF-05', name: 'Joel Ramos', initials: 'JR', specialty: 'Air Conditioning', status: 'On Task', assigned: [], phone: '+63 917 220 1223', shift: '8:00 AM – 5:00 PM' },
   { id: 'STF-06', name: 'Aileen Torres', initials: 'AT', specialty: 'IT / Computers', status: 'Available', assigned: [], phone: '+63 917 220 1230', shift: '1:00 PM – 9:00 PM' },
 ]
 
@@ -127,20 +127,20 @@ export interface AuditEntry {
 }
 
 export const auditEntries: AuditEntry[] = [
-  { id: 'LOG-014', timestamp: 'May 16, 2025 · 10:30 AM', user: 'Admin User', actionType: 'Status Change', action: 'Changed status of REP-2025-0012 to In Progress', ip: '192.168.1.14' },
-  { id: 'LOG-013', timestamp: 'May 16, 2025 · 10:02 AM', user: 'Admin User', actionType: 'Report Update', action: 'Updated Report REP-2025-0012 — added maintenance note', ip: '192.168.1.14' },
-  { id: 'LOG-012', timestamp: 'May 16, 2025 · 09:15 AM', user: 'Juan Dela Cruz', actionType: 'Report Update', action: 'Submitted new report REP-2025-0012', ip: '192.168.1.87' },
-  { id: 'LOG-011', timestamp: 'May 15, 2025 · 04:12 PM', user: 'Admin User', actionType: 'User Management', action: 'Deactivated account of Carlo Mendoza', ip: '192.168.1.14' },
-  { id: 'LOG-010', timestamp: 'May 15, 2025 · 02:05 PM', user: 'Maricel Dizon', actionType: 'Status Change', action: 'Changed status of REP-2025-0009 to Resolved', ip: '192.168.1.55' },
-  { id: 'LOG-009', timestamp: 'May 15, 2025 · 11:48 AM', user: 'Admin User', actionType: 'Equipment', action: 'Added new equipment EQP-1015 — Koppel KCS-20', ip: '192.168.1.14' },
+  { id: 'LOG-014', timestamp: 'May 16, 2025 · 10:30 AM', user: 'Admin User', actionType: 'Status Change', action: 'Changed status to In Progress', ip: '192.168.1.14' },
+  { id: 'LOG-013', timestamp: 'May 16, 2025 · 10:02 AM', user: 'Admin User', actionType: 'Report Update', action: 'Added maintenance note', ip: '192.168.1.14' },
+  { id: 'LOG-012', timestamp: 'May 16, 2025 · 09:15 AM', user: 'Juan Dela Cruz', actionType: 'Report Update', action: 'Submitted new report', ip: '192.168.1.87' },
+  { id: 'LOG-011', timestamp: 'May 15, 2025 · 04:12 PM', user: 'Admin User', actionType: 'User Management', action: 'Deactivated account', ip: '192.168.1.14' },
+  { id: 'LOG-010', timestamp: 'May 15, 2025 · 02:05 PM', user: 'Maricel Dizon', actionType: 'Status Change', action: 'Changed status to Resolved', ip: '192.168.1.55' },
+  { id: 'LOG-009', timestamp: 'May 15, 2025 · 11:48 AM', user: 'Admin User', actionType: 'Equipment', action: 'Added new equipment', ip: '192.168.1.14' },
   { id: 'LOG-008', timestamp: 'May 15, 2025 · 09:20 AM', user: 'Maria Santos', actionType: 'Authentication', action: 'Signed in from a new device', ip: '192.168.1.102' },
-  { id: 'LOG-007', timestamp: 'May 14, 2025 · 08:40 AM', user: 'Admin User', actionType: 'Report Update', action: 'Raised priority of REP-2025-0008 to Critical', ip: '192.168.1.14' },
-  { id: 'LOG-006', timestamp: 'May 14, 2025 · 08:22 AM', user: 'Joel Ramos', actionType: 'Status Change', action: 'Changed status of REP-2025-0008 to In Progress', ip: '192.168.1.61' },
-  { id: 'LOG-005', timestamp: 'May 13, 2025 · 03:05 PM', user: 'Admin User', actionType: 'User Management', action: 'Created account for Liza Fernandez', ip: '192.168.1.14' },
-  { id: 'LOG-004', timestamp: 'May 13, 2025 · 11:20 AM', user: 'System', actionType: 'Equipment', action: 'Asset count recalculated for Computer Lab 1', ip: '127.0.0.1' },
-  { id: 'LOG-003', timestamp: 'May 12, 2025 · 01:10 PM', user: 'Admin User', actionType: 'Report Update', action: 'Assigned REP-2025-0007 to Rey Manalo', ip: '192.168.1.14' },
+  { id: 'LOG-007', timestamp: 'May 14, 2025 · 08:40 AM', user: 'Admin User', actionType: 'Report Update', action: 'Raised priority to Critical', ip: '192.168.1.14' },
+  { id: 'LOG-006', timestamp: 'May 14, 2025 · 08:22 AM', user: 'Joel Ramos', actionType: 'Status Change', action: 'Changed status to In Progress', ip: '192.168.1.61' },
+  { id: 'LOG-005', timestamp: 'May 13, 2025 · 03:05 PM', user: 'Admin User', actionType: 'User Management', action: 'Created account', ip: '192.168.1.14' },
+  { id: 'LOG-004', timestamp: 'May 13, 2025 · 11:20 AM', user: 'System', actionType: 'Equipment', action: 'Asset count recalculated', ip: '127.0.0.1' },
+  { id: 'LOG-003', timestamp: 'May 12, 2025 · 01:10 PM', user: 'Admin User', actionType: 'Report Update', action: 'Assigned to staff', ip: '192.168.1.14' },
   { id: 'LOG-002', timestamp: 'May 12, 2025 · 09:02 AM', user: 'Ana Villanueva', actionType: 'Authentication', action: 'Signed in', ip: '192.168.1.120' },
-  { id: 'LOG-001', timestamp: 'May 10, 2025 · 03:50 PM', user: 'Admin User', actionType: 'Status Change', action: 'Changed status of REP-2025-0002 to Resolved', ip: '192.168.1.14' },
+  { id: 'LOG-001', timestamp: 'May 10, 2025 · 03:50 PM', user: 'Admin User', actionType: 'Status Change', action: 'Changed status to Resolved', ip: '192.168.1.14' },
 ]
 
 /* --------------------------- All reports -------------------------- */
@@ -162,17 +162,4 @@ export interface AdminReportRow {
 /* The live queue (assignments, status changes, submitted reports) lives in
    reportStore.ts; `allReports` is only the seed it starts from. */
 
-export const allReports: AdminReportRow[] = [
-  { id: 'REP-2025-0012', equipment: 'Computer Monitor', category: 'Computer', location: 'Computer Lab 1', reportedBy: 'Juan Dela Cruz', priority: 'High', status: 'PENDING', date: 'May 16, 2025' },
-  { id: 'REP-2025-0011', equipment: 'Projector', category: 'Projector', location: 'AVR Room', reportedBy: 'Maria Santos', priority: 'Medium', status: 'IN PROGRESS', date: 'May 15, 2025', assignedTo: 'Rey Manalo' },
-  { id: 'REP-2025-0010', equipment: 'Printer', category: 'Printer', location: 'Admin Office', reportedBy: 'Pedro Reyes', priority: 'Low', status: 'PENDING', date: 'May 15, 2025' },
-  { id: 'REP-2025-0009', equipment: 'Electric Fan', category: 'Electric Fan', location: 'Room 304', reportedBy: 'Ana Villanueva', priority: 'Medium', status: 'RESOLVED', date: 'May 14, 2025', assignedTo: 'Maricel Dizon' },
-  { id: 'REP-2025-0008', equipment: 'Air Conditioner', category: 'Air Conditioner', location: 'Faculty Room', reportedBy: 'Juan Dela Cruz', priority: 'Critical', status: 'IN PROGRESS', date: 'May 14, 2025', assignedTo: 'Joel Ramos' },
-  { id: 'REP-2025-0007', equipment: 'Desktop Computer', category: 'Computer', location: 'Computer Lab 2', reportedBy: 'Maria Santos', priority: 'High', status: 'RESOLVED', date: 'May 12, 2025', assignedTo: 'Rey Manalo' },
-  { id: 'REP-2025-0006', equipment: 'Microphone', category: 'Audio Equipment', location: 'AVR Room', reportedBy: 'Pedro Reyes', priority: 'Low', status: 'CANCELLED', date: 'May 11, 2025' },
-  { id: 'REP-2025-0005', equipment: 'Chalkboard', category: 'Furniture', location: 'Room 204', reportedBy: 'Ana Villanueva', priority: 'Low', status: 'RESOLVED', date: 'May 9, 2025', assignedTo: 'Maricel Dizon' },
-  { id: 'REP-2025-0004', equipment: 'Laboratory Microscope', category: 'Science Equipment', location: 'Room 305', reportedBy: 'Juan Dela Cruz', priority: 'High', status: 'PENDING', date: 'May 8, 2025' },
-  { id: 'REP-2025-0003', equipment: 'Office Chair', category: 'Furniture', location: 'Faculty Room', reportedBy: 'Maria Santos', priority: 'Low', status: 'IN PROGRESS', date: 'May 7, 2025', assignedTo: 'Maricel Dizon' },
-  { id: 'REP-2025-0002', equipment: 'Extension Cord', category: 'Others', location: 'Room 204', reportedBy: 'Pedro Reyes', priority: 'Critical', status: 'RESOLVED', date: 'May 5, 2025', assignedTo: 'Tessie Bautista' },
-  { id: 'REP-2025-0001', equipment: 'Whiteboard', category: 'Furniture', location: 'AVR Room', reportedBy: 'Ana Villanueva', priority: 'Low', status: 'CANCELLED', date: 'May 3, 2025' },
-]
+export const allReports: AdminReportRow[] = []

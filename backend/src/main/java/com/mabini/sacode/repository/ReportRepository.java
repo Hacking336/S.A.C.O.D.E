@@ -119,6 +119,12 @@ public class ReportRepository {
                 status.getLabel(), resolved, id);
     }
 
+    public int assign(Long id, Long assigneeId) {
+        return jdbc.update(
+                "update public.reports set assigned_to = ? where id = ?",
+                assigneeId, id);
+    }
+
     public int deleteById(Long id) {
         return jdbc.update("delete from public.reports where id = ?", id);
     }
