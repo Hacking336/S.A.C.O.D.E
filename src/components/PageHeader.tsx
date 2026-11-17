@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Bell, MessageCircle, ChevronDown, LogOut, RefreshCw, UserRound } from 'lucide-react'
+import { ArrowLeft, Bell, MessageCircle, ChevronDown, LogOut, RefreshCw, UserRound, Wrench } from 'lucide-react'
 import { adminUser, currentUser } from '../data/mock'
+import { maintenanceUser } from '../data/maintenanceMock'
 import { UserAvatar } from './Avatar'
 
 interface PageHeaderProps {
   title: ReactNode
   subtitle?: string
   backTo?: string
-  variant: 'instructor' | 'admin'
+  variant: 'instructor' | 'admin' | 'staff'
   /** page-specific controls rendered to the left of the icon cluster */
   extra?: ReactNode
 }
@@ -17,7 +18,8 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-  const user = variant === 'instructor' ? currentUser : adminUser
+  const user =
+    variant === 'instructor' ? currentUser : variant === 'admin' ? adminUser : maintenanceUser
 
   useEffect(() => {
     if (!open) return
@@ -78,7 +80,13 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
             <UserAvatar
               variant={variant}
               initials={user.initials}
-              tone={variant === 'instructor' ? 'bg-blue-600' : 'bg-indigo-600'}
+              tone={
+                variant === 'instructor'
+                  ? 'bg-blue-600'
+                  : variant === 'admin'
+                    ? 'bg-indigo-600'
+                    : 'bg-teal-600'
+              }
             />
             <span className="hidden text-left leading-tight sm:block">
               <span className="block text-[13px] font-semibold text-slate-800">{user.name}</span>
@@ -94,17 +102,20 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
                 <p className="truncate text-[11.5px] text-slate-500">{user.email}</p>
               </div>
               <div className="my-1 h-px bg-slate-100" />
-              <Link
-                to={variant === 'admin' ? '/admin/profile' : '/profile'}
-                onClick={() => setOpen(false)}
-                className="flex items-center gap-2.5 px-4 py-2.5 text-[13px] text-slate-700 hover:bg-slate-50"
-              >
-                <UserRound className="h-4 w-4 text-slate-400" />
-                My Profile
-              </Link>
+              {variant !== 'staff' && (
+                <Link
+                  to={variant === 'admin' ? '/admin/profile' : '/profile'}
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-[13px] text-slate-700 hover:bg-slate-50"
+                >
+                  <UserRound className="h-4 w-4 text-slate-400" />
+                  My Profile
+                </Link>
+              )}
               {/* Instructors get no shortcut into the admin side — that door is
-                  /admin/login. Admins may still preview the instructor view. */}
-              {variant === 'admin' && (
+                  /admin/login. Admins may still preview the instructor view, and
+                  maintenance staff can hop back to the instructor side. */}
+              {variant !== 'instructor' && (
                 <Link
                   to="/dashboard"
                   onClick={() => setOpen(false)}
@@ -112,6 +123,16 @@ export function PageHeader({ title, subtitle, backTo, variant, extra }: PageHead
                 >
                   <RefreshCw className="h-4 w-4 text-slate-400" />
                   Switch to Instructor view
+                </Link>
+              )}
+              {variant === 'admin' && (
+                <Link
+                  to="/maintenance"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center gap-2.5 px-4 py-2.5 text-[13px] text-slate-700 hover:bg-slate-50"
+                >
+                  <Wrench className="h-4 w-4 text-slate-400" />
+                  Switch to Maintenance view
                 </Link>
               )}
               <button

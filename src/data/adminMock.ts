@@ -30,6 +30,22 @@ export const campusLocations: CampusLocation[] = [
   { id: 'LOC-08', building: 'Building D', floor: '3rd Floor', room: 'Faculty Room', department: 'College of Computer Studies', equipmentCount: 16 },
   { id: 'LOC-09', building: 'Gymnasium', floor: 'Ground Floor', room: 'Sports Office', department: 'Physical Education', equipmentCount: 33 },
   { id: 'LOC-10', building: 'Library Annex', floor: '2nd Floor', room: 'Multimedia Room', department: 'Library Services', equipmentCount: 25 },
+  ...Array.from({ length: 12 }, (_, i) => ({
+    id: `LOC-${String(11 + i).padStart(2, '0')}`,
+    building: 'MRI Building',
+    floor: '2nd Floor',
+    room: `MRI ${201 + i}`,
+    department: '—',
+    equipmentCount: 0,
+  })),
+  ...Array.from({ length: 11 }, (_, i) => ({
+    id: `LOC-${String(23 + i).padStart(2, '0')}`,
+    building: 'MRI Building',
+    floor: '3rd Floor',
+    room: `MRI ${302 + i}`,
+    department: '—',
+    equipmentCount: 0,
+  })),
 ]
 
 /* ------------------------------ Staff ----------------------------- */
@@ -139,7 +155,12 @@ export interface AdminReportRow {
   status: ReportStatus
   date: string
   assignedTo?: string
+  /** Photo attached by the reporter, stored as a data URL so triage can read it. */
+  photo?: string
 }
+
+/* The live queue (assignments, status changes, submitted reports) lives in
+   reportStore.ts; `allReports` is only the seed it starts from. */
 
 export const allReports: AdminReportRow[] = [
   { id: 'REP-2025-0012', equipment: 'Computer Monitor', category: 'Computer', location: 'Computer Lab 1', reportedBy: 'Juan Dela Cruz', priority: 'High', status: 'PENDING', date: 'May 16, 2025' },

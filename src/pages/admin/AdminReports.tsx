@@ -1,16 +1,24 @@
 import { useMemo, useState } from 'react'
-import { ArrowUpNarrowWide, Search, UserPlus } from 'lucide-react'
+import {
+  ArrowUpNarrowWide,
+  CheckCircle2,
+  Loader2,
+  ScanLine,
+  Search,
+  Sparkles,
+  TriangleAlert,
+} from 'lucide-react'
 import { PageHeader } from '../../components/PageHeader'
 import { Modal } from '../../components/Modal'
 import { PriorityBadge } from '../../components/Badges'
 import { EquipmentThumb } from '../../components/EquipmentThumb'
 import { ReportPriorityQueue } from '../../lib/reportPriorityQueue'
-import {
-  allReports,
-  maintenanceStaff,
-  type AdminReportRow,
-} from '../../data/adminMock'
-import type { ReportStatus } from '../../data/mock'
+import { type AdminReportRow } from '../../data/adminMock'
+import { setReportStatus, updateReport, useReports } from '../../data/reportStore'
+import { setWorkOrderStatus } from '../../data/maintenanceMock'
+import type { Priority, ReportStatus } from '../../data/mock'
+import { addWorkOrder, type WorkOrder } from '../../data/maintenanceMock'
+import { triageReport, type TriageVerdict } from '../../lib/aiTriage'
 
 const TABS = ['All', 'Pending', 'In Progress', 'Resolved', 'Cancelled'] as const
 type Tab = (typeof TABS)[number]
@@ -36,12 +44,36 @@ const STATUS_TONE: Record<ReportStatus, string> = {
   CANCELLED: 'border-slate-300 bg-slate-50 text-slate-600',
 }
 
+const buildingFor = (location: string) => (/^mri/i.test(location) ? 'MRI Building' : 'Main Building')
+
+const dueFor = (priority: Priority) => {
+  if (priority === 'Critical') return 'Today · end of shift'
+  if (priority === 'High') return 'Today · 5:00 PM'
+  if (priority === 'Medium') return 'Tomorrow'
+  return 'This week'
+}
+
+const triageInput = (report: AdminReportRow) => ({
+  id: report.id,
+  equipment: report.equipment,
+  category: report.category,
+  location: report.location,
+  reportedBy: report.reportedBy,
+  // Real photo from the instructor's report — this is what the vision model reads.
+  photo: report.photo,
+})
+
 export default function AdminReports() {
-  const [rows, setRows] = useState<AdminReportRow[]>(allReports)
+  const rows = useReports()
   const [tab, setTab] = useState<Tab>('All')
   const [query, setQuery] = useState('')
-  const [assigning, setAssigning] = useState<AdminReportRow | null>(null)
-  const [staffId, setStaffId] = useState(maintenanceStaff[0].id)
+  const [triaging, setTriaging] = useState<AdminReportRow | null>(null)
+  const [verdict, setVerdict] = useState<TriageVerdict | null>(null)
+  const [triageState, setTriageState] = useState<'scanning' | 'ready' | 'error'>('scanning')
+  const [triageError, setTriageError] = useState<string | null>(null)
+  const [assignedByAi, setAssignedByAi] = useState<Record<string, number>>({})
+  const [assigningAll, setAssigningAll] = useState(false)
+  const [bulkSummary, setBulkSummary] = useState<string | null>(null)
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -59,26 +91,90 @@ export default function AdminReports() {
     return ReportPriorityQueue.from(matches).drainSorted()
   }, [rows, tab, query])
 
-  const setStatus = (id: string, status: ReportStatus) =>
-    setRows((prev) => prev.map((report) => (report.id === id ? { ...report, status } : report)))
+  // One queue: a status set here also moves the job on the technician's board.
+  const setStatus = (id: string, status: ReportStatus) => {
+    setReportStatus(id, status)
+    setWorkOrderStatus(id, status)
+  }
 
-  const assign = () => {
-    if (!assigning) return
-    const member = maintenanceStaff.find((item) => item.id === staffId)
-    if (!member) return
+  /* ------------------------- AI triage & routing ------------------------- */
 
-    setRows((prev) =>
-      prev.map((report) =>
-        report.id === assigning.id
-          ? {
-              ...report,
-              assignedTo: member.name,
-              status: report.status === 'PENDING' ? 'IN PROGRESS' : report.status,
-            }
-          : report,
-      ),
-    )
-    setAssigning(null)
+  /** Hand a finished triage verdict to the technician's work order list. */
+  const applyAssignment = (report: AdminReportRow, result: TriageVerdict) => {
+    const technician = result.technician.name
+
+    updateReport(report.id, {
+      assignedTo: technician,
+      priority: result.priority,
+      status: report.status === 'PENDING' ? 'IN PROGRESS' : report.status,
+    })
+
+    const order: WorkOrder = {
+      id: report.id,
+      equipment: report.equipment,
+      category: report.category,
+      location: report.location,
+      room: report.location,
+      building: buildingFor(report.location),
+      reportedBy: report.reportedBy,
+      priority: result.priority,
+      status: 'PENDING',
+      date: report.date,
+      due: dueFor(result.priority),
+      note: result.summary,
+      assignedTo: technician,
+      triage: {
+        engine: result.engine,
+        skill: result.skill,
+        issue: result.issue,
+        confidence: Math.round(result.confidence * 100),
+      },
+    }
+    addWorkOrder(order)
+    setAssignedByAi((prev) => ({ ...prev, [report.id]: Math.round(result.confidence * 100) }))
+  }
+
+  const runTriage = async (report: AdminReportRow) => {
+    setTriageState('scanning')
+    setTriageError(null)
+    setVerdict(null)
+    try {
+      const result = await triageReport(triageInput(report))
+      setVerdict(result)
+      setTriageState('ready')
+    } catch (error) {
+      setTriageState('error')
+      setTriageError(
+        error instanceof Error ? error.message : 'The triage step could not read this report.',
+      )
+    }
+  }
+
+  const openTriage = (report: AdminReportRow) => {
+    setTriaging(report)
+    void runTriage(report)
+  }
+
+  const pendingUnassigned = useMemo(
+    () => rows.filter((row) => row.status === 'PENDING' && !row.assignedTo),
+    [rows],
+  )
+
+  const autoAssignPending = async () => {
+    if (assigningAll || pendingUnassigned.length === 0) return
+    setAssigningAll(true)
+    setBulkSummary(null)
+    try {
+      const results = await Promise.all(pendingUnassigned.map((report) => triageReport(triageInput(report))))
+      results.forEach((result, index) => applyAssignment(pendingUnassigned[index], result))
+      setBulkSummary(
+        `AI triaged and routed ${results.length} pending report${results.length === 1 ? '' : 's'}.`,
+      )
+    } catch (error) {
+      setBulkSummary(error instanceof Error ? error.message : 'Bulk triage failed.')
+    } finally {
+      setAssigningAll(false)
+    }
   }
 
   const counts = useMemo(
@@ -93,7 +189,7 @@ export default function AdminReports() {
     <>
       <PageHeader
         title="Reports"
-        subtitle="Review and manage every campus damage report, most urgent first."
+        subtitle="Every campus damage report, triaged by AI and routed to the right technician."
         variant="admin"
       />
 
@@ -127,6 +223,20 @@ export default function AdminReports() {
             Urgent first
           </span>
 
+          <button
+            type="button"
+            onClick={() => void autoAssignPending()}
+            disabled={assigningAll || pendingUnassigned.length === 0}
+            className="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 px-3 py-2 text-[12.5px] font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {assigningAll ? (
+              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+            ) : (
+              <Sparkles className="h-3.5 w-3.5" strokeWidth={2} />
+            )}
+            Auto-assign pending ({pendingUnassigned.length})
+          </button>
+
           <div className="relative w-full sm:w-auto">
             <Search
               className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
@@ -142,6 +252,13 @@ export default function AdminReports() {
           </div>
         </div>
       </div>
+
+      {bulkSummary && (
+        <div className="mb-4 flex items-start gap-2.5 rounded-lg bg-violet-50 px-3.5 py-3 text-[12.5px] font-medium text-violet-800 ring-1 ring-inset ring-violet-200">
+          <Sparkles className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={2} />
+          <p>{bulkSummary}</p>
+        </div>
+      )}
 
       {/* ------------------------- Phone card list ------------------------ */}
       <div className="space-y-3 md:hidden">
@@ -178,17 +295,16 @@ export default function AdminReports() {
 
             <button
               type="button"
-              onClick={() => {
-                setAssigning(report)
-                setStaffId(maintenanceStaff[0].id)
-              }}
-              className="mt-2.5 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-[12.5px] font-semibold text-blue-700 transition hover:border-blue-600 hover:bg-blue-600 hover:text-white"
+              onClick={() => openTriage(report)}
+              disabled={report.status === 'RESOLVED' || report.status === 'CANCELLED'}
+              className="mt-2.5 inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 text-[12.5px] font-semibold text-violet-700 transition hover:border-violet-600 hover:bg-violet-600 hover:text-white disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400"
             >
-              <UserPlus className="h-3.5 w-3.5" strokeWidth={2} />
-              Assign to Staff
+              <Sparkles className="h-3.5 w-3.5" strokeWidth={2} />
+              {report.assignedTo ? 'Re-run AI triage' : 'Assign with AI'}
             </button>
             <p className="mt-1.5 text-center text-[11px] text-slate-400">
               {report.assignedTo ? `Assigned: ${report.assignedTo}` : 'Unassigned'}
+              {assignedByAi[report.id] ? ` · AI ${assignedByAi[report.id]}%` : ''}
             </p>
           </article>
         ))}
@@ -282,17 +398,16 @@ export default function AdminReports() {
                   <td className="whitespace-nowrap px-5 py-4 text-right">
                     <button
                       type="button"
-                      onClick={() => {
-                        setAssigning(report)
-                        setStaffId(maintenanceStaff[0].id)
-                      }}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-blue-200 bg-blue-50 px-3 py-1.5 text-[12.5px] font-semibold text-blue-700 transition hover:border-blue-600 hover:bg-blue-600 hover:text-white"
+                      onClick={() => openTriage(report)}
+                      disabled={report.status === 'RESOLVED' || report.status === 'CANCELLED'}
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-violet-200 bg-violet-50 px-3 py-1.5 text-[12.5px] font-semibold text-violet-700 transition hover:border-violet-600 hover:bg-violet-600 hover:text-white disabled:cursor-not-allowed disabled:border-slate-200 disabled:bg-slate-50 disabled:text-slate-400"
                     >
-                      <UserPlus className="h-3.5 w-3.5" strokeWidth={2} />
-                      Assign to Staff
+                      <Sparkles className="h-3.5 w-3.5" strokeWidth={2} />
+                      {report.assignedTo ? 'Re-run AI triage' : 'Assign with AI'}
                     </button>
                     <p className="mt-1.5 text-[11px] text-slate-400">
                       {report.assignedTo ? `Assigned: ${report.assignedTo}` : 'Unassigned'}
+                      {assignedByAi[report.id] ? ` · AI ${assignedByAi[report.id]}%` : ''}
                     </p>
                   </td>
                 </tr>
@@ -313,54 +428,189 @@ export default function AdminReports() {
 
       <p className="mt-4 text-[13px] text-slate-500">
         Showing {filtered.length} of {rows.length} reports · ordered by the priority queue (max
-        heap: Critical → High → Medium → Low) · status changes are local until the API is connected
+        heap: Critical → High → Medium → Low) ·{' '}
+        AI triage reads the report photo with a server-side vision model (Gemini Flash on the free
+        tier, or a local model when the backend is set to Ollama) and falls back to the built-in
+        classifier if it is offline{' '}
+        · assignments are local until the API is connected
       </p>
 
-      {assigning && (
+      {triaging && (
         <Modal
-          title="Assign to Staff"
-          subtitle={`${assigning.id} · ${assigning.equipment} · ${assigning.location}`}
-          onClose={() => setAssigning(null)}
+          title="AI Triage"
+          subtitle={`${triaging.id} · ${triaging.equipment} · ${triaging.location}`}
+          onClose={() => setTriaging(null)}
         >
-          <div className="space-y-4">
-            <div>
-              <label className="field-label" htmlFor="staff">
-                Maintenance staff
-              </label>
-              <select
-                id="staff"
-                className="field-input"
-                value={staffId}
-                onChange={(e) => setStaffId(e.target.value)}
-              >
-                {maintenanceStaff.map((member) => (
-                  <option key={member.id} value={member.id}>
-                    {member.name} — {member.specialty} ({member.status})
-                  </option>
-                ))}
-              </select>
-              <p className="mt-2 text-[12px] text-slate-400">
-                Assigning a pending report moves it to In Progress.
+          {triageState === 'scanning' && (
+            <div className="flex flex-col items-center gap-3 py-10 text-center">
+              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-violet-50 text-violet-600">
+                <Loader2 className="h-7 w-7 animate-spin" />
+              </span>
+              <p className="text-[14px] font-semibold text-slate-800">Reading the report…</p>
+              <p className="max-w-xs text-[12.5px] leading-relaxed text-slate-500">
+                Scanning the report photo to detect the equipment and damage type, then matching
+                the technician whose specialty fits and whose workload is lightest.
               </p>
             </div>
+          )}
 
-            <div className="flex items-center justify-end gap-2.5 border-t border-slate-100 pt-4">
-              <button
-                type="button"
-                onClick={() => setAssigning(null)}
-                className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-50"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                onClick={assign}
-                className="rounded-lg bg-blue-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-blue-700"
-              >
-                Assign Report
-              </button>
+          {triageState === 'error' && (
+            <div className="space-y-4">
+              <div className="flex items-start gap-2.5 rounded-lg bg-red-50 px-3.5 py-3 text-[12.5px] text-red-700 ring-1 ring-inset ring-red-200">
+                <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={2} />
+                <p>{triageError}</p>
+              </div>
+              <div className="flex items-center justify-end gap-2.5 border-t border-slate-100 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setTriaging(null)}
+                  className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-50"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  onClick={() => void runTriage(triaging)}
+                  className="rounded-lg bg-violet-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-violet-700"
+                >
+                  Try again
+                </button>
+              </div>
             </div>
-          </div>
+          )}
+
+          {triageState === 'ready' && verdict && (
+            <div className="space-y-4">
+              {triaging.photo ? (
+                <figure className="overflow-hidden rounded-xl border border-slate-200">
+                  <img
+                    src={triaging.photo}
+                    alt={`Damage photo attached to ${triaging.id}`}
+                    className="max-h-52 w-full bg-slate-100 object-cover"
+                  />
+                  <figcaption className="flex items-center gap-1.5 bg-slate-50 px-3 py-2 text-[11.5px] font-semibold text-slate-500">
+                    <ScanLine className="h-3.5 w-3.5" strokeWidth={2.1} />
+                    Report photo read by AI triage
+                  </figcaption>
+                </figure>
+              ) : (
+                <p className="rounded-lg bg-slate-50 px-3 py-2.5 text-[12px] text-slate-500">
+                  No photo was attached to this report, so triage used the written details only.
+                </p>
+              )}
+
+              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                <div className="rounded-lg bg-slate-50 px-3 py-2.5">
+                  <p className="text-[10.5px] font-bold uppercase tracking-wide text-slate-400">
+                    Detected issue
+                  </p>
+                  <p className="mt-0.5 text-[12.5px] font-semibold text-slate-800">
+                    {verdict.issue}
+                  </p>
+                </div>
+                <div className="rounded-lg bg-slate-50 px-3 py-2.5">
+                  <p className="text-[10.5px] font-bold uppercase tracking-wide text-slate-400">
+                    Priority
+                  </p>
+                  <div className="mt-1">
+                    <PriorityBadge priority={verdict.priority} />
+                  </div>
+                </div>
+                <div className="rounded-lg bg-slate-50 px-3 py-2.5">
+                  <p className="text-[10.5px] font-bold uppercase tracking-wide text-slate-400">
+                    Skill needed
+                  </p>
+                  <p className="mt-0.5 text-[12.5px] font-semibold text-slate-800">
+                    {verdict.skill}
+                  </p>
+                </div>
+              </div>
+
+              {verdict.signals.length > 0 && (
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="text-[11.5px] font-semibold text-slate-500">Signals:</span>
+                  {verdict.signals.map((signal) => (
+                    <span
+                      key={signal}
+                      className="rounded-md bg-slate-100 px-2 py-1 text-[11px] font-semibold text-slate-600"
+                    >
+                      {signal}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <div className="rounded-xl border border-violet-200 bg-violet-50/60 p-4">
+                <p className="text-[10.5px] font-bold uppercase tracking-wide text-violet-500">
+                  Routed to
+                </p>
+                <div className="mt-2 flex items-center gap-3">
+                  <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-violet-600 text-[13px] font-bold text-white">
+                    {verdict.technician.initials}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate text-[14px] font-bold text-slate-900">
+                      {verdict.technician.name}
+                    </p>
+                    <p className="truncate text-[12px] text-slate-500">
+                      {verdict.technician.specialty} · {verdict.technician.assigned.length} active
+                      job{verdict.technician.assigned.length === 1 ? '' : 's'} ·{' '}
+                      {verdict.technician.status}
+                    </p>
+                  </div>
+                  <span className="ml-auto shrink-0 rounded-lg bg-white px-2.5 py-1 text-[11.5px] font-bold text-violet-700 ring-1 ring-inset ring-violet-200">
+                    {verdict.matchScore}% match
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between text-[11.5px] font-semibold text-slate-500">
+                  <span>Triage confidence</span>
+                  <span className="text-slate-800">{Math.round(verdict.confidence * 100)}%</span>
+                </div>
+                <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
+                  <div
+                    className="h-full rounded-full bg-violet-500"
+                    style={{ width: `${Math.round(verdict.confidence * 100)}%` }}
+                  />
+                </div>
+              </div>
+
+              <p className="rounded-lg bg-slate-50 px-3 py-2.5 text-[12.5px] leading-relaxed text-slate-600">
+                {verdict.summary}
+              </p>
+
+              <p className="text-[11.5px] leading-relaxed text-slate-400">
+                {verdict.engine === 'model'
+                  ? `Read by ${verdict.model ?? 'the vision model'}. Confirming hands this job to the technician above.`
+                  : verdict.fallbackReason
+                    ? `The AI model could not be reached (${verdict.fallbackReason}), so the built-in classifier triaged this one.`
+                    : 'Built-in classifier — this report was triaged from its text alone.'}
+              </p>
+
+              <div className="flex items-center justify-end gap-2.5 border-t border-slate-100 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setTriaging(null)}
+                  className="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-[13px] font-semibold text-slate-600 transition hover:bg-slate-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    applyAssignment(triaging, verdict)
+                    setTriaging(null)
+                  }}
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-violet-600 px-4 py-2.5 text-[13px] font-semibold text-white transition hover:bg-violet-700"
+                >
+                  <CheckCircle2 className="h-4 w-4" strokeWidth={2} />
+                  Assign to {verdict.technician.name}
+                </button>
+              </div>
+            </div>
+          )}
         </Modal>
       )}
     </>

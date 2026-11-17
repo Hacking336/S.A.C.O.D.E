@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.mabini.sacode.service.TriageUnavailableException;
+
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
@@ -31,6 +33,15 @@ public class ApiExceptionHandler {
         body.put("status", HttpStatus.BAD_REQUEST.value());
         body.put("error", ex.getMessage());
         return ResponseEntity.badRequest().body(body);
+    }
+
+    /** The AI triage step could not reach the model — that is a gateway problem, not a bug. */
+    @ExceptionHandler(TriageUnavailableException.class)
+    public ResponseEntity<Map<String, Object>> handleTriageUnavailable(TriageUnavailableException ex) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("status", HttpStatus.BAD_GATEWAY.value());
+        body.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(body);
     }
 
     @ExceptionHandler(RuntimeException.class)

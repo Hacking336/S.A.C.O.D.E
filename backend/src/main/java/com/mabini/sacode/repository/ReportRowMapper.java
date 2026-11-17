@@ -19,7 +19,7 @@ final class ReportRowMapper implements RowMapper<Report> {
             "select r.id, r.report_code, r.reporter_id, u.full_name as reporter_name, " +
             "       r.equipment_id, r.equipment_name, r.category, r.brand_model, r.serial_number, " +
             "       r.building, r.room, r.damage_type, r.priority, r.status, r.description, " +
-            "       r.photo_urls, r.reported_at, r.resolved_at " +
+            "       r.photo_urls, r.assigned_to, (select count(*) from public.report_history h where h.report_id = r.id) as note_count, r.reported_at, r.resolved_at " +
             "  from public.reports r " +
             "  left join public.users u on u.id = r.reporter_id";
 
@@ -49,6 +49,7 @@ final class ReportRowMapper implements RowMapper<Report> {
         report.setPhotoUrls(readPhotoUrls(rs));
         report.setReportedAt(toLocalDateTime(rs.getTimestamp("reported_at")));
         report.setResolvedAt(toLocalDateTime(rs.getTimestamp("resolved_at")));
+        report.setAssignedTo(rs.getLong("assigned_to"));
         return report;
     }
 
@@ -71,6 +72,26 @@ final class ReportRowMapper implements RowMapper<Report> {
 
     static LocalDateTime toLocalDateTime(Timestamp timestamp) {
         return timestamp == null ? null : timestamp.toLocalDateTime();
+    }
+
+    static List<Long> readLongArray(ResultSet rs, String column) throws SQLException {
+        java.sql.Array array = rs.getArray(column);
+        List<Long> values = new ArrayList<>();
+        if (array == null) {
+            return values;
+        }
+        Object raw = array.getArray();
+        if (raw instanceof Object[] values2) {
+            for (Object value : values2) {
+                if (value != null) {
+                    try {
+                        values.add(Long.valueOf(String.valueOf(value)));
+                    } catch (NumberFormatException ignored) {
+                    }
+                }
+            }
+        }
+        return values;
     }
 
     ReportRowMapper() {

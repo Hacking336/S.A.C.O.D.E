@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
  * shows up in the header, the profile card and anywhere else at once.
  */
 
-export type AvatarVariant = 'instructor' | 'admin'
+export type AvatarVariant = 'instructor' | 'admin' | 'staff'
 
 const key = (variant: AvatarVariant) => `campus-care:avatar:${variant}`
 const CHANGE_EVENT = 'campus-care:avatar-changed'

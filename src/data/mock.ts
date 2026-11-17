@@ -349,7 +349,40 @@ export const buildingOptions = [
   'Building B - 2nd Floor',
   'Building C - 2nd Floor',
   'Building D - 3rd Floor',
+  'MRI Building - 2nd Floor',
+  'MRI Building - 3rd Floor',
 ]
+
+/** Rooms offered once a building / floor is chosen in the report form. */
+export const roomOptions: Record<string, string[]> = {
+  'MRI Building - 2nd Floor': [
+    'MRI 201',
+    'MRI 202',
+    'MRI 203',
+    'MRI 204',
+    'MRI 205',
+    'MRI 206',
+    'MRI 207',
+    'MRI 208',
+    'MRI 209',
+    'MRI 210',
+    'MRI 211',
+    'MRI 212',
+  ],
+  'MRI Building - 3rd Floor': [
+    'MRI 302',
+    'MRI 303',
+    'MRI 304',
+    'MRI 305',
+    'MRI 306',
+    'MRI 307',
+    'MRI 308',
+    'MRI 309',
+    'MRI 310',
+    'MRI 311',
+    'MRI 312',
+  ],
+}
 
 export const damageTypeOptions = [
   'Not working / No power',

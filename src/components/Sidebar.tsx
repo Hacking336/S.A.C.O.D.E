@@ -21,6 +21,7 @@ import {
 } from 'lucide-react'
 import { BrandMark } from './Seal'
 import { notificationFeed } from '../data/mock'
+import { useOpenWorkOrderCount } from '../data/maintenanceMock'
 
 const UNREAD_COUNT = notificationFeed.filter((item) => !item.read).length
 
@@ -43,6 +44,11 @@ const INSTRUCTOR_NAV: NavItem[] = [
   { label: 'Help & Support', to: '/help', icon: LifeBuoy },
 ]
 
+const staffNav = (openJobs: number): NavItem[] => [
+  { label: 'Dashboard', to: '/maintenance', icon: LayoutDashboard },
+  { label: 'My Tasks', to: '/maintenance/tasks', icon: ClipboardList, badge: openJobs },
+]
+
 const ADMIN_NAV: NavItem[] = [
   { label: 'Dashboard', to: '/admin', icon: LayoutDashboard },
   { label: 'Reports', to: '/admin/reports', icon: FileText },
@@ -60,14 +66,20 @@ export function Sidebar({
   open,
   onClose,
 }: {
-  variant: 'instructor' | 'admin'
+  variant: 'instructor' | 'admin' | 'staff'
   open: boolean
   onClose: () => void
 }) {
   const navigate = useNavigate()
-  const items = variant === 'instructor' ? INSTRUCTOR_NAV : ADMIN_NAV
-  // /admin itself must stay active only on the admin dashboard route
-  const end = (to: string) => to === '/admin'
+  const openJobs = useOpenWorkOrderCount()
+  const NAV_BY_VARIANT: Record<typeof variant, NavItem[]> = {
+    instructor: INSTRUCTOR_NAV,
+    admin: ADMIN_NAV,
+    staff: staffNav(openJobs),
+  }
+  const items = NAV_BY_VARIANT[variant]
+  // /admin and /maintenance themselves must stay active only on their dashboard route
+  const end = (to: string) => to === '/admin' || to === '/maintenance'
 
   return (
     <aside
@@ -123,7 +135,7 @@ export function Sidebar({
           type="button"
           onClick={() => {
             onClose()
-            navigate(variant === 'admin' ? '/admin/login' : '/')
+            navigate(variant === 'instructor' ? '/' : variant === 'admin' ? '/admin/login' : '/')
           }}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-[13.5px] font-medium text-slate-300 transition-colors hover:bg-white/10 hover:text-white"
         >

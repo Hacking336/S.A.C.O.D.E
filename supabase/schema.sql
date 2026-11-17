@@ -99,6 +99,7 @@ create table public.reports (
                  check (status in ('PENDING', 'IN PROGRESS', 'RESOLVED', 'CANCELLED')),
   description    text        not null,
   photo_urls     text[]      not null default '{}',
+  assigned_to   bigint      references public.users (id) on delete set null,
 
   reported_at    timestamptz not null default now(),
   resolved_at    timestamptz,
@@ -109,6 +110,19 @@ create table public.reports (
 create trigger reports_set_updated_at
   before update on public.reports
   for each row execute function public.set_updated_at();
+
+create function public.reports_get_assignee_name()
+returns text language sql stable as $$
+  select u.name
+  from public.users u
+  where u.id = (select r.assigned_to from public.reports r where r.id = reports_get_assignee_name.id limit 1)
+$$;
+
+create view public.reports_with_assignee as
+  select r.*, u.name as assignee_name
+  from public.reports r
+  left join public.users u on u.id = r.assigned_to
+  where (true or r.id::text = current_setting('app.report_code_filter', true));
 
 -- =====================================================================
 --  4. REPORT HISTORY  (append-only audit trail / timeline)
@@ -152,6 +166,7 @@ create index idx_reports_priority      on public.reports (priority);
 create index idx_reports_reported_at   on public.reports (reported_at desc);
 create index idx_reports_room          on public.reports (room);
 create index idx_reports_search        on public.reports (lower(equipment_name), lower(room));
+create index idx_reports_assigned_to  on public.reports (assigned_to);
 
 create index idx_history_report_id     on public.report_history (report_id, created_at);
 create index idx_history_actor_id      on public.report_history (actor_id);

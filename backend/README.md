@@ -19,6 +19,12 @@ Set these environment variables (see `.env.example`):
 | `SUPABASE_DB_USER` | Database user (usually `postgres`) |
 | `SUPABASE_DB_PASSWORD` | Database password |
 | `CORS_ALLOWED_ORIGINS` | Comma-separated browser origins allowed to call the API |
+| `TRIAGE_PROVIDER` | `gemini` (hosted, default) or `ollama` (local model) |
+| `GEMINI_API_KEY` | Free Google AI Studio key used by hosted triage |
+| `GEMINI_MODEL` | Hosted model id (default `gemini-3.8-flash`) |
+| `OLLAMA_URL` | Ollama base URL when `TRIAGE_PROVIDER=ollama` |
+| `OLLAMA_MODEL` | Local model id when `TRIAGE_PROVIDER=ollama` (default `gemma4:e2b`) |
+| `TRIAGE_MAX_IMAGE_EDGE` | Longest edge the photo is downscaled to before triage (default `1024`) |
 
 ## Run
 
@@ -70,6 +76,45 @@ The API starts on `http://localhost:8080`.
 | `GET` | `/api/analytics/equipment?limit=5` |
 | `GET` | `/api/analytics/over-time` |
 | `GET` | `/api/analytics/overview` | Everything above in one round-trip |
+
+### AI triage — `TriageController`
+
+| Method | Path | Notes |
+| --- | --- | --- |
+| `POST` | `/api/triage` | Reads a report + photo with Gemma 4 E2B and returns issue, skill, priority, confidence, signals, summary |
+
+Two providers, chosen by `TRIAGE_PROVIDER`:
+
+**`gemini` (default)** — hosted, nothing to download. Create a free key at
+<https://aistudio.google.com/apikey> and set `GEMINI_API_KEY` in `backend/.env`.
+The key stays on the server; the browser never sees it.
+
+**`ollama`** — a local model instead, for offline demos:
+
+```bash
+ollama pull gemma4:e2b
+ollama serve
+```
+
+Token use is kept down on three sides: the photo is downscaled to
+`TRIAGE_MAX_IMAGE_EDGE` (a 3024×4032 phone shot becomes 768×1024, about 95% fewer
+image bytes and roughly an order of magnitude fewer image tokens), the output is
+capped at 220 tokens, and `triage-rules.txt` sets a word budget per field.
+
+The rules the model must follow are in
+`src/main/resources/triage-rules.txt` — trades, priority definitions and the
+house rules (photo beats description, hazards force Critical, low confidence
+when the photo is unclear). Edit that file to change the policy; no Java needed.
+Both providers are asked for schema-constrained JSON.
+
+Request body:
+
+```json
+{ "report": { "id": "REP-2025-0012", "equipment": "Computer Monitor", "category": "Computer", "location": "Computer Lab 1", "reportedBy": "Juan Dela Cruz", "description": "…" },
+  "photo": "data:image/jpeg;base64,…" }
+```
+
+Ollama is asked for schema-constrained JSON (`format` + `think: false`), so the reply maps straight onto the response. If Ollama is down the endpoint returns **502** with the reason, and the front end falls back to its built-in classifier rather than pretending a model decided.
 
 ### Announcements — `AnnouncementController`
 

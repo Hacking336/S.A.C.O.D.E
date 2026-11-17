@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { ShieldCheck } from 'lucide-react'
+import { ShieldCheck, Wrench } from 'lucide-react'
 import { Seal } from '../components/Seal'
 
 /**
@@ -87,6 +87,13 @@ export default function Login() {
           >
             <ShieldCheck className="h-3.5 w-3.5" strokeWidth={2.2} />
             Administrator sign in
+          </Link>
+          <Link
+            to="/maintenance"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-white/30 px-3 py-1.5 text-[12px] font-semibold text-white/90 transition hover:border-white/60 hover:bg-white/10 hover:text-white"
+          >
+            <Wrench className="h-3.5 w-3.5" strokeWidth={2.2} />
+            Maintenance staff sign in
           </Link>
           <p className="text-white/80">© 2025 Mabini Colleges, Inc. All rights reserved.</p>
         </footer>

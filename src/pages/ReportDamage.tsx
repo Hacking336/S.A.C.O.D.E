@@ -1,11 +1,14 @@
 import { useState } from 'react'
-import { CloudUpload, RotateCcw, Send } from 'lucide-react'
+import { CheckCircle2, CloudUpload, RotateCcw, Send } from 'lucide-react'
 import { PageHeader } from '../components/PageHeader'
+import { addReport } from '../data/reportStore'
 import {
   buildingOptions,
   categoryOptions,
+  currentUser,
   damageTypeOptions,
   equipmentOptions,
+  roomOptions,
 } from '../data/mock'
 
 type PriorityChoice = 'Critical' | 'High' | 'Medium' | 'Low'
@@ -48,6 +51,9 @@ export default function ReportDamage() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [priority, setPriority] = useState<PriorityChoice>('Critical')
   const [fileName, setFileName] = useState<string | null>(null)
+  // The uploaded photo is kept as a data URL: it is the image the AI triage step reads.
+  const [photo, setPhoto] = useState<string | null>(null)
+  const [sentId, setSentId] = useState<string | null>(null)
 
   const update = (key: keyof typeof EMPTY_FORM) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((prev) => ({ ...prev, [key]: e.target.value }))
@@ -56,12 +62,22 @@ export default function ReportDamage() {
     setForm(EMPTY_FORM)
     setPriority('Critical')
     setFileName(null)
+    setPhoto(null)
   }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Mock submit — the Spring Boot endpoint is wired up in Step 4.
-    alert('Report submitted! (mock)')
+    // Mock submit — lands in the queue the admin side reads, photo included.
+    const report = addReport({
+      equipment: form.equipmentName || form.category || 'Unspecified equipment',
+      category: form.category || 'Others',
+      location: [form.room, form.building].filter(Boolean).join(' · ') || 'Location not given',
+      reportedBy: currentUser.name,
+      priority,
+      status: 'PENDING',
+      photo: photo ?? undefined,
+    })
+    setSentId(report.id)
     handleReset()
   }
 
@@ -73,6 +89,16 @@ export default function ReportDamage() {
         backTo="/dashboard"
         variant="instructor"
       />
+
+      {sentId && (
+        <div className="mb-4 flex items-start gap-2.5 rounded-lg bg-green-50 px-3.5 py-3 text-[12.5px] font-medium text-green-800 ring-1 ring-inset ring-green-200">
+          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0" strokeWidth={2} />
+          <p>
+            Report {sentId} submitted. The admin&rsquo;s AI triage will read the photo and assign
+            the technician whose specialty fits.
+          </p>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="card p-7">
         {/* ----------------------- Equipment information ---------------------- */}
@@ -180,9 +206,15 @@ export default function ReportDamage() {
               type="text"
               placeholder="e.g. Room 204"
               className="field-input"
+              list="room-options"
               value={form.room}
               onChange={update('room')}
             />
+            <datalist id="room-options">
+              {(roomOptions[form.building] ?? []).map((room) => (
+                <option key={room} value={room} />
+              ))}
+            </datalist>
           </div>
         </div>
 
@@ -272,7 +304,15 @@ export default function ReportDamage() {
               type="file"
               accept="image/png,image/jpeg"
               className="hidden"
-              onChange={(e) => setFileName(e.target.files?.[0]?.name ?? null)}
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (!file) return
+                setFileName(file.name)
+                const reader = new FileReader()
+                reader.onload = () =>
+                  setPhoto(typeof reader.result === 'string' ? reader.result : null)
+                reader.readAsDataURL(file)
+              }}
             />
           </label>
         </div>

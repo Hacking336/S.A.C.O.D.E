@@ -22,8 +22,12 @@ public class Report {
     private ReportStatus status;
     private String description;
     private List<String> photoUrls = new ArrayList<>();
+    private Long assignedTo;
     private LocalDateTime reportedAt;
     private LocalDateTime resolvedAt;
+    // end of pending user additions
+    // Does not count as "pending" for staff reassignment.
+    //
 
     public Long getId() {
         return id;
@@ -167,5 +171,13 @@ public class Report {
 
     public void setResolvedAt(LocalDateTime resolvedAt) {
         this.resolvedAt = resolvedAt;
+    }
+
+    public Long getAssignedTo() {
+        return assignedTo;
+    }
+
+    public void setAssignedTo(Long assignedTo) {
+        this.assignedTo = assignedTo;
     }
 }

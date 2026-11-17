@@ -20,6 +20,8 @@ import AdminStaff from './pages/admin/AdminStaff'
 import AdminUsers from './pages/admin/AdminUsers'
 import AdminAnnouncements from './pages/admin/AdminAnnouncements'
 import AdminAuditLogs from './pages/admin/AdminAuditLogs'
+import MaintenanceDashboard from './pages/MaintenanceDashboard'
+import MaintenanceTasks from './pages/MaintenanceTasks'
 
 export default function App() {
   return (
@@ -39,6 +41,12 @@ export default function App() {
         <Route path="/knowledge-base" element={<KnowledgeBase />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/help" element={<HelpSupport />} />
+      </Route>
+
+      {/* ---------------------- Maintenance Staff ---------------------- */}
+      <Route element={<AppLayout variant="staff" />}>
+        <Route path="/maintenance" element={<MaintenanceDashboard />} />
+        <Route path="/maintenance/tasks" element={<MaintenanceTasks />} />
       </Route>
 
       {/* ---------------------------- Admin ---------------------------- */}
